@@ -7,7 +7,8 @@ import Head from "next/head";
 const MainContainer = styled.div`
   min-height: 100vh;
   background-color: #f5f5f5;
-  padding: 0 3rem;
+  // padding: 0 3rem;
+  // padding-left: 3rem;
 `;
 
 interface LayoutProps {
@@ -15,9 +16,11 @@ interface LayoutProps {
   name: string;
 }
 
+const LayoutWrapper = styled.div``;
+
 const PageLayout: FC<LayoutProps> = ({ children, name }) => {
   return (
-    <>
+    <LayoutWrapper data-scroll-section>
       <Head>
         <title>{name}</title>
         <link rel="icon" href="/images/cover.png" />
@@ -25,7 +28,7 @@ const PageLayout: FC<LayoutProps> = ({ children, name }) => {
       <Navbar />
       <MainContainer>{children}</MainContainer>
       <Footer />
-    </>
+    </LayoutWrapper>
   );
 };
 

@@ -1,8 +1,15 @@
 import styled from "styled-components";
 
-const Button = styled.button<{ variant: string }>`
+interface ButtonProps {
+  variant: "primary" | "secondary";
+  width?: string;
+  rounded?: boolean;
+}
+
+const Button = styled.button<ButtonProps>`
   cursor: pointer;
   padding: 13px 25px;
+  width: 150px;
   border-radius: 12px;
   background: ${({ theme, variant }) =>
     variant === "primary"
