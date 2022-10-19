@@ -5,8 +5,9 @@ import Button from "../utils/Buttons";
 import Link from "next/link";
 
 const Section = styled.section`
-  min-height: 100vh;
+  height: auto;
   padding: 0 3rem;
+  padding-bottom: 3rem;
   display: flex;
   transition: all 0.5s ease;
   background-image: url("/images/bg-hero.png");
@@ -137,10 +138,15 @@ const HeroTextBig = styled(motion.h1)`
 const QuoteWrapper = styled.div`
   // margin-left: 6rem;
   padding-left: 3rem;
+  width: 80%;
 
   position: relative;
   line-height: 40.2px;
   // background: red;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 
   .quote-line {
     position: absolute;

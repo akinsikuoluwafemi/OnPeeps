@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 interface ButtonProps {
-  variant: "primary" | "secondary";
+  variant: "primary" | "secondary" | "tertiary";
   width?: string;
   rounded?: boolean;
 }
@@ -72,6 +72,22 @@ const Button = styled.button<ButtonProps>`
         : `${theme.defaultTheme.secondaryTextColorDisabled}`};
 
     cursor: not-allowed;
+  }
+
+  ${({ variant }) =>
+    variant === "tertiary" &&
+    `
+    border: 1px solid transparent;
+  cursor: pointer;
+  border-radius: 12px;
+  width: fit-content;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+
+    `}
+
+  &:hover {
+    background-color: ${({ theme }) => theme.defaultTheme.primaryHoverColor};
   }
 `;
 

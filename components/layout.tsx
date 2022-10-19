@@ -6,9 +6,7 @@ import Head from "next/head";
 
 const MainContainer = styled.div`
   min-height: 100vh;
-  background-color: #f5f5f5;
-  // padding: 0 3rem;
-  // padding-left: 3rem;
+  width: 100vw;
 `;
 
 interface LayoutProps {

@@ -21,6 +21,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <LocomotiveScrollProvider
           options={{
             smooth: true,
+            smartphone: {
+              smooth: true,
+            },
+            tablet: {
+              smooth: true,
+            },
+
             // ... all available Locomotive Scroll instance options
           }}
           watch={

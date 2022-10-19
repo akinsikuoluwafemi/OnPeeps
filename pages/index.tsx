@@ -8,6 +8,10 @@ import Header from "@/components/Navbar";
 import PageLayout from "@/components/layout";
 import HeroSection from "sections/HeroSection";
 import Navbar from "@/components/Navbar";
+import HomeStepsSection from "sections/HomeStepsSection";
+import HomeSendRequestMockup from "sections/HomeSendRequestMockup";
+import HomeMapMockup from "sections/HomeMapMockup";
+import HomeVideoMockup from "sections/HomeVideoMockup";
 
 export default function Home() {
   // const count = useSelector(selectValue);
@@ -15,10 +19,17 @@ export default function Home() {
   // const dispatch = useDispatch();
 
   return (
-    <PageLayout name="Home / Peepson">
+    <PageLayout
+      name="OnPeeps / A fast, safe and reliable way to facilitate exchanged acts of kindness.
+    "
+    >
       {/* <img style={{ height: "40px", width: "40px" }} src="images/cover.png" /> */}
 
       <HeroSection />
+      <HomeStepsSection />
+      <HomeSendRequestMockup />
+      <HomeMapMockup />
+      <HomeVideoMockup />
     </PageLayout>
   );
 }

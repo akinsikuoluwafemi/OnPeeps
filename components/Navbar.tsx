@@ -102,6 +102,9 @@ const Navbar = () => {
           <a href="#">For Business</a>
           <a href="#">Pricing</a>
           <a href="#">How it works</a>
+          <Link href="/contact">
+            <a>Contact Us</a>
+          </Link>
         </MenuItems>
         <MenuItems>
           <Button variant="primary">
