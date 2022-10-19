@@ -1,8 +1,15 @@
 import styled from "styled-components";
 
-const Button = styled.button<{ variant: string }>`
+interface ButtonProps {
+  variant: "primary" | "secondary" | "tertiary";
+  width?: string;
+  rounded?: boolean;
+}
+
+const Button = styled.button<ButtonProps>`
   cursor: pointer;
   padding: 13px 25px;
+  width: 150px;
   border-radius: 12px;
   background: ${({ theme, variant }) =>
     variant === "primary"
@@ -65,6 +72,22 @@ const Button = styled.button<{ variant: string }>`
         : `${theme.defaultTheme.secondaryTextColorDisabled}`};
 
     cursor: not-allowed;
+  }
+
+  ${({ variant }) =>
+    variant === "tertiary" &&
+    `
+    border: 1px solid transparent;
+  cursor: pointer;
+  border-radius: 12px;
+  width: fit-content;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+
+    `}
+
+  &:hover {
+    background-color: ${({ theme }) => theme.defaultTheme.primaryHoverColor};
   }
 `;
 

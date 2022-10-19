@@ -10,6 +10,8 @@ export const defaultTheme = {
   secondaryTextColorHover: "#95A9C6",
   secondaryTextColorActive: "#7B93B8",
   secondaryTextColorDisabled: "#CAD4E3",
+  fontTextDark: "#000000",
+  fontBig: "64px",
   fontSmall: "14px",
   fontBase: "16px",
   fontLarge: "18px",
