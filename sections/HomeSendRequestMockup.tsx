@@ -50,6 +50,11 @@ const TextSmall = styled.p`
   font-size: 28px;
   width: 600px;
   line-height: 50.4px;
+
+  @media (max-width: 1100px) {
+    font-size: 24px;
+    width: 500px;
+  }
 `;
 
 const HomeSendRequestMockup = () => {

@@ -6,11 +6,6 @@ const Section = styled.section`
   height: auto;
   background-color: #fff;
   padding: 7rem 3rem;
-
-  @media (min-width: 2000px) {
-    height: auto;
-    padding: 10rem 3rem;
-  }
 `;
 
 const StepsDescription = styled.p`

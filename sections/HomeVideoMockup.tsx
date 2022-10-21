@@ -12,11 +12,6 @@ const Section = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  @media (min-width: 2000px) {
-    height: auto;
-    padding: 10rem 3rem;
-  }
 `;
 
 const VideoMockupWrapper = styled.div`

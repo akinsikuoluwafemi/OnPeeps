@@ -1,5 +1,5 @@
 import "@/styles/global.css";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import type { AppProps } from "next/app";
 import { store } from "../store";
 import { Provider } from "react-redux";
@@ -12,6 +12,7 @@ import "locomotive-scroll/dist/locomotive-scroll.css";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const containerRef = useRef(null);
+
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
@@ -40,7 +41,11 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           containerRef={containerRef}
         >
           <AnimatePresence>
-            <main data-scroll-container ref={containerRef}>
+            <main
+              style={{ zIndex: "100" }}
+              data-scroll-container
+              ref={containerRef}
+            >
               {/* ...your app */}
               <Component {...pageProps} />
             </main>

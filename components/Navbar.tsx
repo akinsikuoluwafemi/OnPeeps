@@ -6,12 +6,7 @@ import dynamic from "next/dynamic";
 import Button from "utils/Buttons";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-
-const moveup = keyframes`
-  100%{
-    transform: translateY(0);
-  }
-`;
+import { moveup } from "utils/Nav";
 
 const NavContainer = styled.div`
   color: ${({ theme }) => theme.defaultTheme.primaryDefaultColor};
@@ -86,7 +81,7 @@ const Navbar = () => {
   // }, []);
 
   return (
-    <NavContainer ref={navRef}>
+    <NavContainer>
       <MenuItem>
         <MenuItems>
           <Link href="/">

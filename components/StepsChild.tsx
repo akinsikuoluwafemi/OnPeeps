@@ -29,6 +29,10 @@ const StepsChildren = styled.div`
     min-width: 50%;
     border-style: dashed;
     // display: none;
+
+    @media (max-width: 1023px) {
+      left: 125px;
+    }
   }
 `;
 

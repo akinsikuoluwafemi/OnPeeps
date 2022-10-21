@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const Section = styled.div`
-  min-height: 90vh;
+  height: auto;
   background-color: #fff;
   display: flex;
   position: relative;
@@ -17,6 +17,9 @@ const Section = styled.div`
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1;
+
+    @media (max-width: 1100px) {
+      width: 300px;
   }
 `;
 
@@ -34,6 +37,10 @@ const LeftView = styled.div`
     height: 100%;
     border-radius: 10px;
     box-shadow: ${({ theme }) => theme.defaultTheme.primaryColorDefaultShadow};
+
+    @media (max-width: 1100px) {
+      height: auto;
+    }
   }
 `;
 const RightView = styled.div`
@@ -62,6 +69,9 @@ const RightViewTextWrapper = styled.div`
     padding-top: 7rem;
     line-height: 43.2px;
     // background: teal;
+    @media (max-width: 1100px) {
+      padding-top: 0;
+    }
   }
   .two {
     font-weight: ${({ theme }) => theme.defaultTheme.fontWeightLight};
@@ -70,12 +80,20 @@ const RightViewTextWrapper = styled.div`
     padding-top: 2rem;
     padding-bottom: 8rem;
     // background: red;
+
+    @media (max-width: 1100px) {
+      padding-bottom: 4rem;
+    }
   }
   .three {
     font-weight: ${({ theme }) => theme.defaultTheme.fontWeightLight};
     line-height: 24px;
     padding-top: 5rem;
     text-align: center;
+
+    @media (max-width: 1100px) {
+      padding-top: 0;
+    }
   }
 `;
 
