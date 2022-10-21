@@ -27,6 +27,7 @@ export default function Home() {
 
   return (
     <PageLayout
+      style={{ overflow: "hidden" }}
       name="OnPeeps / A fast, safe and reliable way to facilitate exchanged acts of kindness.
     "
     >
