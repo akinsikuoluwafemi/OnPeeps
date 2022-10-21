@@ -1,6 +1,13 @@
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { FC } from "react";
+import {
+  FC,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import styled from "styled-components";
 import Head from "next/head";
 import { useMediaQuery } from "react-responsive";
@@ -12,8 +19,11 @@ import { AiOutlineClose } from "react-icons/ai";
 import Button from "utils/Buttons";
 import Link from "next/link";
 
+import gsap from "gsap";
+import ScrollTrigger from "gsap/dist/ScrollTrigger";
+
 const MainContainer = styled.div`
-  min-height: 100vh;
+  min-height: 100%;
   // width: 100vw;
 `;
 
@@ -38,25 +48,20 @@ const Sidebar = styled.div<{ open: boolean }>`
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
-  scroll: none;
   padding: 2rem;
   transform: ${({ open }) => (open ? "translateX(0)" : "translateX(100%)")};
   transition: transform 0.3s ease-in-out;
 `;
 
 const SidebarContent = styled.div`
-  // background-color: teal;
   width: 100%;
   height: 100%;
-  overflow-y: scroll;
-  // margin-top: 4rem;
   display: flex;
   flex-direction: column;
 
   .sidebar-header {
     display: flex;
     justify-content: space-between;
-    // background-color: red;
     align-items: center;
     width: 90%;
     padding-bottom: 1.5rem;
@@ -117,8 +122,17 @@ const PageLayout: FC<LayoutProps> = ({ children, name, description }) => {
   const isBigScreen = useMediaQuery({ query: "(min-width: 1024px)" });
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1023px)" });
 
+  const sidebarRef = useRef<HTMLDivElement | null>(null);
+
+  // pin sidebar to right with gsap
+
+  gsap.registerPlugin(ScrollTrigger);
+
   return (
-    <LayoutWrapper data-scroll-section>
+    <LayoutWrapper
+
+    // data-scroll-section
+    >
       <Head>
         <title>{name}</title>
         {description && <meta name="description" content={description}></meta>}
@@ -126,55 +140,58 @@ const PageLayout: FC<LayoutProps> = ({ children, name, description }) => {
       </Head>
       <div
         onClick={() => dispatch(toggleSidebar())}
-        style={{ display: open ? "block" : "none" }}
+        style={{ display: open ? "block" : "none", overflow: "hidden" }}
         className="backdrop"
       ></div>
 
       {isBigScreen && <Navbar />}
       {isTabletOrMobile && <NavbarMobile />}
 
-      <Sidebar open={open}>
-        <SidebarContent>
-          <div className="sidebar-header">
-            <img src="/images/cover.png" alt="logo" />
-            <span
-              className="icon-wrapper"
-              onClick={() => dispatch(toggleSidebar())}
-            >
-              <AiOutlineClose />
-            </span>
-          </div>
-          <div className="sidebar-main">
-            <ul>
-              <li>Home</li>
-            </ul>
+      {isTabletOrMobile && (
+        <Sidebar ref={sidebarRef} open={open}>
+          <SidebarContent>
+            <div className="sidebar-header">
+              <img src="/images/cover.png" alt="logo" />
+              <span
+                className="icon-wrapper"
+                onClick={() => dispatch(toggleSidebar())}
+              >
+                <AiOutlineClose />
+              </span>
+            </div>
+            <div className="sidebar-main">
+              <ul>
+                <li>Home</li>
+              </ul>
 
-            <ul>
-              <li>For Business</li>
-            </ul>
+              <ul>
+                <li>For Business</li>
+              </ul>
 
-            <ul>
-              <li>Pricing</li>
-            </ul>
+              <ul>
+                <li>Pricing</li>
+              </ul>
 
-            <ul>
-              <li>How it works</li>
-            </ul>
+              <ul>
+                <li>How it works</li>
+              </ul>
 
-            <ul>
-              <li>Contact Us</li>
-            </ul>
+              <ul>
+                <li>Contact Us</li>
+              </ul>
 
-            <Button className="btn" variant="primary">
-              <Link href="/signup">
-                <a>&nbsp; Sign Up &nbsp;</a>
-              </Link>
-            </Button>
-          </div>
-        </SidebarContent>
-      </Sidebar>
+              <Button className="btn" variant="primary">
+                <Link href="/signup">
+                  <a>&nbsp; Sign Up &nbsp;</a>
+                </Link>
+              </Button>
+            </div>
+          </SidebarContent>
+        </Sidebar>
+      )}
 
       <MainContainer>{children}</MainContainer>
+
       <Footer />
     </LayoutWrapper>
   );
