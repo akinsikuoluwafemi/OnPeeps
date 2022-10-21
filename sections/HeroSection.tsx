@@ -15,7 +15,7 @@ const Section = styled.section`
   background-size: cover;
   background-position: top;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1023px) {
     flex-direction: column;
   }
 `;
@@ -25,7 +25,6 @@ const HeroRight = styled(motion.div)`
   min-width: 50%;
   height: 100%;
   flex-direction: column;
-  // background-color: red;
 `;
 
 const container = {
@@ -55,6 +54,7 @@ const item = {
 
 const HeroRightUp = styled.div`
   flex: 1 1 auto;
+
   text-align: start;
   padding-top: 3rem;
   transition: ease all 0.5s;
@@ -66,13 +66,12 @@ const HeroRightUp = styled.div`
     transition: ease all 0.5s;
   }
 
-  @media (max-width: 768px) {
-    text-align: end;
+  @media (max-width: 1023px) {
+    padding-top: 0;
 
     img {
       margin-bottom: 2rem;
-      width: 100%;
-      max-width: 220px;
+      max-width: 300px;
       height: auto;
     }
   }
@@ -81,20 +80,23 @@ const HeroRightUp = styled.div`
 const HeroRightDown = styled.div`
   flex: 1 1 auto;
   text-align: end;
-  margin-top: -8rem;
+  // margin-top: -8rem;
   transition: ease all 0.5s;
+  // background-color: teal;
 
   img {
     width: 100%;
     max-width: 500px;
     height: auto;
   }
-  @media (max-width: 768px) {
-    text-align: start;
-    // margin-top: 0;
+  @media (max-width: 1023px) {
+    position: relative;
 
     img {
-      max-width: 350px;
+      max-width: 400px;
+      position: absolute;
+      top: -200px;
+      right: 0;
     }
   }
 `;
@@ -133,6 +135,12 @@ const HeroTextBig = styled(motion.h1)`
   font-size: ${({ theme }) => theme.defaultTheme.fontBig};
   color: ${({ theme }) => theme.defaultTheme.primaryDefaultColor};
   margin-bottom: 4rem;
+  // background: teal;
+  width: 80%;
+
+  @media (max-width: 1023px) {
+    margin-bottom: 2rem;
+  }
 `;
 
 const QuoteWrapper = styled.div`
@@ -144,8 +152,8 @@ const QuoteWrapper = styled.div`
   line-height: 40.2px;
   // background: red;
 
-  @media (max-width: 768px) {
-    width: 100%;
+  @media (max-width: 1023px) {
+    padding-left: 0;
   }
 
   .quote-line {
@@ -157,6 +165,10 @@ const QuoteWrapper = styled.div`
     top: 0rem;
     background: #ac5d83;
     opacity: 0.5;
+
+    @media (max-width: 1023px) {
+      display: none;
+    }
   }
 `;
 
@@ -181,6 +193,10 @@ const ButtonWrapper = styled.div`
   width: 80%;
   // margin-left: 4rem;
 
+  @media (max-width: 1023px) {
+    display: none;
+  }
+
   .m-right {
     margin-right: 4rem;
   }
@@ -199,7 +215,7 @@ const HeroSection = () => {
           // data-scroll-direction="horizontal"
         >
           <motion.span variants={heroItem}>
-            Lightening the burden of others.
+            Come and receive timely help
           </motion.span>
         </HeroTextBig>
 
@@ -238,6 +254,15 @@ const HeroSection = () => {
             src="/images/Hero-right-up.svg"
             alt="hero-right-up-animation"
           />
+          {/* <motion.img
+            variants={item}
+            // data-scroll
+            // data-scroll-delay="0.1"
+            // data-scroll-speed="4"
+            // data-scroll-direction="horizontal"
+            src="/images/Hero-right-down.svg"
+            alt="hero-right-up-animation"
+          /> */}
         </HeroRightUp>
         <HeroRightDown>
           <motion.img

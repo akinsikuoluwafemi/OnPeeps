@@ -12,11 +12,18 @@ import HomeStepsSection from "sections/HomeStepsSection";
 import HomeSendRequestMockup from "sections/HomeSendRequestMockup";
 import HomeMapMockup from "sections/HomeMapMockup";
 import HomeVideoMockup from "sections/HomeVideoMockup";
+import HomeSendRequestMockupMobile from "sections/HomeSendRequestMockupMobile";
+import { useMediaQuery } from "react-responsive";
+import HomeMapMockupMobile from "sections/HomeMapMockupMobile";
+import HomeVideoMockupMobile from "sections/HomeVideoMockupMobile";
 
 export default function Home() {
   // const count = useSelector(selectValue);
 
   // const dispatch = useDispatch();
+
+  const isBigScreen = useMediaQuery({ query: "(min-width: 1024px)" });
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1023px)" });
 
   return (
     <PageLayout
@@ -27,9 +34,15 @@ export default function Home() {
 
       <HeroSection />
       <HomeStepsSection />
-      <HomeSendRequestMockup />
-      <HomeMapMockup />
-      <HomeVideoMockup />
+
+      {isBigScreen && <HomeSendRequestMockup />}
+      {isTabletOrMobile && <HomeSendRequestMockupMobile />}
+
+      {isBigScreen && <HomeMapMockup />}
+      {isTabletOrMobile && <HomeMapMockupMobile />}
+
+      {isBigScreen && <HomeVideoMockup />}
+      {isTabletOrMobile && <HomeVideoMockupMobile />}
     </PageLayout>
   );
 }
