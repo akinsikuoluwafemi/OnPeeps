@@ -4,9 +4,10 @@ import styled from "styled-components";
 const FooterWrapper = styled.div`
   background-color: ${({ theme }) => theme.defaultTheme.primaryHoverColor};
 
-  padding: 0 3rem;
+  padding: 1rem 3rem;
   width: 100%;
   min-height: 320px;
+  margin-top: 3rem;
 
   .hr {
     width: 80%;

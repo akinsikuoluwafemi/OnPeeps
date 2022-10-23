@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const Section = styled.section`
-  background: teal;
+  //   background: teal;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -15,11 +15,12 @@ const MapMockupTextWrapper = styled.div`
   justify-content: center;
   align-items: center;
   padding: 5rem 3rem;
+  // background; pink;
 `;
 
 const TextContainer = styled.div`
-  width: 700px;
-  text-align: center;
+  //   width: 700px;
+  //   text-align: center;
   margin: 0 auto;
 `;
 
@@ -27,9 +28,9 @@ const BigText = styled.p`
   font-size: 36px;
   color: ${({ theme }) => theme.defaultTheme.primaryDefaultColor};
   font-weight: ${({ theme }) => theme.defaultTheme.fontWeightBold};
-  text-align: center;
+  //   text-align: center;
   margin: 0 auto;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
   color: #fff;
 `;
 
@@ -49,11 +50,12 @@ const MapMockupImgWrapper = styled.div`
   img {
     position: absolute;
     // display: none;
-    top: 130%;
+    top: 350px;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 400px;
     border-radius: 10px;
+    height: auto;
   }
 `;
 
