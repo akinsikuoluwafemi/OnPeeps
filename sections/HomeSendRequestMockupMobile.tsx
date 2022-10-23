@@ -3,20 +3,22 @@ import styled from "styled-components";
 
 const Section = styled.div`
   background: #fff;
-  min-height: 90vh;
+  //   background: red;
+  //   min-height: 90vh;
   //   padding: 3rem;
-  padding-top: 3rem;
+  //   padding: 3rem 0rem;
   display: flex;
   flex-direction: column;
-  width: 100vw;
+  //   width: 100vw;
 `;
 
 const InnerSection = styled.div`
   background: #fff;
+  //   background: red;
   margin: 0 auto;
-  padding-bottom: 3rem;
-  text-align: center;
-  width: 700px;
+  padding: 5rem 3rem;
+  //   text-align: center;
+  //   width: 700px;
 `;
 
 const InnerSectionBg = styled.div`
@@ -29,6 +31,7 @@ const InnerSectionBg = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  margin-bottom: -1rem;
 
   img {
     position: absolute;
@@ -42,9 +45,9 @@ const BigText = styled.p`
   font-size: 36px;
   color: ${({ theme }) => theme.defaultTheme.primaryDefaultColor};
   font-weight: ${({ theme }) => theme.defaultTheme.fontWeightBold};
-  text-align: center;
+  //   text-align: center;
   margin: 0 auto;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 `;
 
 const SmallText = styled.p`

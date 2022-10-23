@@ -136,10 +136,11 @@ const HeroTextBig = styled(motion.h1)`
   color: ${({ theme }) => theme.defaultTheme.primaryDefaultColor};
   margin-bottom: 4rem;
   // background: teal;
-  width: 80%;
+  // width: 80%;
 
   @media (max-width: 1023px) {
     margin-bottom: 2rem;
+    font-size: 55px;
   }
 `;
 
