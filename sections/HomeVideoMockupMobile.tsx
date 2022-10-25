@@ -67,7 +67,7 @@ const HomeVideoMockupMobile = () => {
   return (
     <Section>
       <InnerSection>
-        <TextBig>Real time chat with the volunteer.</TextBig>
+        <TextBig>Real time chat with the volunteer</TextBig>
         <TextSmall>
           Get the chance to chat with volunteer's who are willing to help you.
           Video calling is possible too! After a volunteer has helped you, he
