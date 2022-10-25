@@ -51,17 +51,20 @@ const HomeStepsSection = () => {
       {
         opacity: 0,
         y: 100,
+        grayscale: 1,
         // y: 100,
       },
       {
         scrollTrigger: {
           trigger: showSection.current,
-          start: "2% bottom",
+          start: "300px bottom",
           end: "bottom center",
           scrub: true,
           markers: false,
         },
         opacity: 1,
+        grayscale: 0,
+
         y: 0,
         duration: 1,
         once: true,
@@ -77,7 +80,7 @@ const HomeStepsSection = () => {
 
         <StepsDescription>
           It takes only few steps to connect people in need to willing
-          volunteers on Peepson.
+          volunteers.
         </StepsDescription>
 
         {isBigScreen && (

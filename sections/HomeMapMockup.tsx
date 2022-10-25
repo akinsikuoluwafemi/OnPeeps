@@ -113,8 +113,8 @@ const HomeMapMockup = () => {
           <p className="one">Someone volunteers to help</p>
 
           <p className="two">
-            After a request must have been published, it appears on other peeps
-            feed and you get help from anyone that choose to volunteer.
+            After a request must have been published, it appears on the map and
+            a volunteer can see it and decide to help out.
           </p>
 
           <p className="three">onPeeps comes with a map and grid feature</p>

@@ -93,8 +93,8 @@ const HomeSendRequestMockup = () => {
       <LeftSideWrapper ref={showSection}>
         <TextBig>Add and publish your request for other peeps to see</TextBig>
         <TextSmall>
-          Lorem ipsum dolor sit amet, adipiscing elit, sed do eiusmod tempor
-          incididunt ut labore et dolore magna aliqua. Ut enim ad
+          Create a request and publish it to the world. You can also add your
+          location to this request so that other peeps can see it on the map.
         </TextSmall>
       </LeftSideWrapper>
       <RightSideWrapper ref={showSection}>

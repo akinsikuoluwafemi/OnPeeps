@@ -65,10 +65,10 @@ const HomeVideoMockup = () => {
         <VideomockupInnerText>
           <p className="text-big">Real time chat with the volunteer.</p>
           <p className="text-small">
-            Get the chance to chat with an helper for further information of the
-            situation you need an help for and also a video call feature. After
-            which the volunteer would able to mark fulfilled if help was
-            successfully rendered.
+            Get the chance to chat with volunteer's who are willing to help you.
+            Video calling is possible too! After a volunteer has helped you, he
+            will be able to set the request to fulfilled, when the both of you
+            reach a consensus that the help was rendered successfully.
           </p>
         </VideomockupInnerText>
       </VideoMockupText>

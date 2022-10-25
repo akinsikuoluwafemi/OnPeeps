@@ -91,8 +91,8 @@ const HomeMapMockupMobile = () => {
         <TextContainer>
           <BigText>Someone Volunteers to help</BigText>
           <SmallText>
-            After a request must have been published, it appears on other peeps
-            feed and you get help from anyone that choose to volunteer.
+            After a request must have been published, it appears on the map and
+            a volunteer can see it and decide to help out.
           </SmallText>
         </TextContainer>
       </MapMockupTextWrapper>
