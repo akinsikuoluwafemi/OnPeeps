@@ -74,9 +74,8 @@ const HomeSendRequestMockupMobile = () => {
       <InnerSection>
         <BigText>Add and publish your request for other peeps to see</BigText>
         <SmallText>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis
+          Create a request and publish it to the world. You can also add your
+          location to this request so that other peeps can see it on the map.
         </SmallText>
       </InnerSection>
       <InnerSectionBg>
