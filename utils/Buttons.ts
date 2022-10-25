@@ -25,15 +25,12 @@ const Button = styled.button<ButtonProps>`
       variant === "primary"
         ? `transparent`
         : `${theme.defaultTheme.primaryDefaultColor}`};
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 
   &:hover {
     background: ${({ theme, variant }) =>
       variant === "primary" ? `${theme.defaultTheme.primaryHoverColor}` : ``};
-    color: ${({ theme, variant }) =>
-      variant === "primary"
-        ? ``
-        : `${theme.defaultTheme.secondaryTextColorHover}`};
+    color: ${({ theme, variant }) => (variant === "primary" ? `` : `#fff`)};
     border: 1px solid
       ${({ theme, variant }) =>
         variant === "primary"

@@ -14,6 +14,10 @@ const NavContainer = styled.div`
   box-shadow: 2px 2px 2px rgba(66, 89, 143, 0.24);
   transform: translateY(-100%);
   animation: ${moveup} 0.5s ease forwards;
+
+  // @media (max-width: 629px) {
+  //   padding: 0.5rem 2rem;
+  // }
 `;
 
 const MenuItem = styled.ul`

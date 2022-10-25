@@ -59,7 +59,7 @@ const HomeVideoMockup = () => {
   return (
     <Section>
       <VideoMockupWrapper>
-        <img src="/images/vc-mockup.svg" alt="video mockup" />
+        <img src="/images/vc-mockup-mobile.svg" alt="video mockup" />
       </VideoMockupWrapper>
       <VideoMockupText>
         <VideomockupInnerText>

@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useLayoutEffect, useRef } from "react";
 import styled from "styled-components";
+import gsap from "gsap";
 
 const Section = styled.section`
   height: 664px;
@@ -15,6 +16,7 @@ const RightSideWrapper = styled.div`
   // background-color: red;
   flex: 0.7 1 auto;
   padding: 5rem 3rem;
+  padding-bottom: 0rem;
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
@@ -58,16 +60,44 @@ const TextSmall = styled.p`
 `;
 
 const HomeSendRequestMockup = () => {
+  const showSection = useRef<HTMLDivElement | null>(null);
+
+  useLayoutEffect(() => {
+    const t1 = gsap.timeline();
+    t1.fromTo(
+      showSection.current,
+      {
+        opacity: 0,
+        y: 100,
+      },
+      {
+        scrollTrigger: {
+          trigger: showSection.current,
+          start: "top center",
+          end: "bottom center",
+          scrub: true,
+          markers: false,
+        },
+
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        once: true,
+        ease: "power2.out",
+      }
+    );
+  }, []);
+
   return (
     <Section>
-      <LeftSideWrapper>
+      <LeftSideWrapper ref={showSection}>
         <TextBig>Add and publish your request for other peeps to see</TextBig>
         <TextSmall>
           Lorem ipsum dolor sit amet, adipiscing elit, sed do eiusmod tempor
           incididunt ut labore et dolore magna aliqua. Ut enim ad
         </TextSmall>
       </LeftSideWrapper>
-      <RightSideWrapper>
+      <RightSideWrapper ref={showSection}>
         <img src="/images/mockup-request.svg" alt="hero-mockup" />
       </RightSideWrapper>
     </Section>

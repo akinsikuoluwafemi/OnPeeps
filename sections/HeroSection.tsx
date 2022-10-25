@@ -18,6 +18,10 @@ const Section = styled.section`
   @media (max-width: 1023px) {
     flex-direction: column;
   }
+
+  @media (max-width: 562px) {
+    padding: 0 2rem;
+  }
 `;
 
 const HeroRight = styled(motion.div)`
@@ -25,6 +29,10 @@ const HeroRight = styled(motion.div)`
   min-width: 50%;
   height: 100%;
   flex-direction: column;
+
+  @media (max-width: 562px) {
+    display: none;
+  }
 `;
 
 const container = {
@@ -71,8 +79,14 @@ const HeroRightUp = styled.div`
 
     img {
       margin-bottom: 2rem;
-      max-width: 300px;
+      max-width: 250px;
       height: auto;
+    }
+  }
+
+  @media (max-width: 562px) {
+    img {
+      max-width: 200px;
     }
   }
 `;
@@ -93,10 +107,15 @@ const HeroRightDown = styled.div`
     position: relative;
 
     img {
-      max-width: 400px;
+      max-width: 350px;
       position: absolute;
       top: -200px;
       right: 0;
+    }
+  }
+  @media (max-width: 562px) {
+    img {
+      max-width: 270px;
     }
   }
 `;
@@ -142,6 +161,10 @@ const HeroTextBig = styled(motion.h1)`
     margin-bottom: 2rem;
     font-size: 55px;
   }
+
+  @media (max-width: 562px) {
+    font-size: 35px;
+  }
 `;
 
 const QuoteWrapper = styled.div`
@@ -155,6 +178,7 @@ const QuoteWrapper = styled.div`
 
   @media (max-width: 1023px) {
     padding-left: 0;
+    width: 100%;
   }
 
   .quote-line {

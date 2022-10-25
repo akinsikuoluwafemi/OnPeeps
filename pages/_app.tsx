@@ -11,20 +11,13 @@ import { AnimatePresence } from "framer-motion";
 // import "locomotive-scroll/dist/locomotive-scroll.css";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-  const containerRef = useRef(null);
-
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <GlobalStyles />
 
         <AnimatePresence>
-          <main
-            // style={{ zIndex: "100" }}
-            // data-scroll-container
-            ref={containerRef}
-          >
-            {/* ...your app */}
+          <main>
             <Component {...pageProps} />
           </main>
         </AnimatePresence>
