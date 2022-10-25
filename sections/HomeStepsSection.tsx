@@ -57,7 +57,7 @@ const HomeStepsSection = () => {
       {
         scrollTrigger: {
           trigger: showSection.current,
-          start: "300px bottom",
+          start: "10px bottom",
           end: "bottom center",
           scrub: true,
           markers: false,
