@@ -189,15 +189,15 @@ const PageLayout: FC<LayoutProps> = ({ children, name, description }) => {
               </ul>
 
               <ul>
-                <li>For Business</li>
+                <li>Safety</li>
               </ul>
 
               <ul>
-                <li>Pricing</li>
+                <li>Support</li>
               </ul>
 
               <ul>
-                <li>How it works</li>
+                <li>Careers</li>
               </ul>
 
               <ul>
