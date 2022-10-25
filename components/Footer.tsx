@@ -3,11 +3,14 @@ import styled from "styled-components";
 
 const FooterWrapper = styled.div`
   background-color: ${({ theme }) => theme.defaultTheme.primaryHoverColor};
-
   padding: 1rem 3rem;
   width: 100%;
   min-height: 320px;
-  margin-top: 3rem;
+  margin-top: 15rem;
+
+  @media (max-width: 768px) {
+    margin-top: 10rem;
+  }
 
   .hr {
     width: 80%;
@@ -66,6 +69,7 @@ const FooterList = styled.ul`
     gap: 1rem;
     border-radius: 10px;
     padding: 0.5rem;
+    width: 40px;
   }
 `;
 

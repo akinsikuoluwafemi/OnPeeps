@@ -21,6 +21,7 @@ import Link from "next/link";
 
 import gsap from "gsap";
 import ScrollTrigger from "gsap/dist/ScrollTrigger";
+import FooterHomeMobile from "./FooterHomeMobile";
 
 const MainContainer = styled.div`
   min-height: 100%;
@@ -37,6 +38,7 @@ interface LayoutProps {
 const LayoutWrapper = styled.div``;
 
 const Sidebar = styled.div<{ open: boolean }>`
+  // font-size: 25px;
   position: fixed;
   top: 0;
   right: 0;
@@ -51,20 +53,29 @@ const Sidebar = styled.div<{ open: boolean }>`
   padding: 2rem;
   transform: ${({ open }) => (open ? "translateX(0)" : "translateX(100%)")};
   transition: transform 0.3s ease-in-out;
+  z-index: 1200;
+  flex: 1 0 auto;
+  overflow-y: auto;
+  // box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 10px -5px,
+  //   rgba(0, 0, 0, 0.14) 0px 16px 24px 2px, rgba(0, 0, 0, 0.12) 0px 6px 30px 5px;
+
+  // transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 `;
 
 const SidebarContent = styled.div`
   width: 100%;
   height: 100%;
+
   display: flex;
   flex-direction: column;
+
 
   .sidebar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 90%;
-    padding-bottom: 1.5rem;
+    padding-bottom: 2rem;
 
     img {
       height: 40px;
@@ -85,7 +96,7 @@ const SidebarContent = styled.div`
   }
 
   .sidebar-main {
-    padding-top: 1.5rem;
+    padding-top: 2rem;
     // background-color: pink;
     height: 100%;
     width: 90%;
@@ -95,14 +106,17 @@ const SidebarContent = styled.div`
     justify-content: flex-start;
     border-top: 1px solid #e8e8e8;
 
+
     ul {
       list-style: none;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
+      padding: 6px 10px;
+      font-size: 1.2rem;
+
 
       &:first-child {
         background-color: #f6f6f6;
         border-radius: 8px;
-        padding: 0.8rem 0.5rem;
       }
 
       li {
@@ -111,8 +125,9 @@ const SidebarContent = styled.div`
     }
 
     .btn {
-      margin: 2rem auto;
-  }
+      margin: 1rem auto;
+      font-size: 1.2rem;
+
 `;
 
 const PageLayout: FC<LayoutProps> = ({ children, name, description }) => {
@@ -129,10 +144,7 @@ const PageLayout: FC<LayoutProps> = ({ children, name, description }) => {
   gsap.registerPlugin(ScrollTrigger);
 
   return (
-    <LayoutWrapper
-
-    // data-scroll-section
-    >
+    <LayoutWrapper>
       <Head>
         <title>{name}</title>
         {description && <meta name="description" content={description}></meta>}
@@ -177,6 +189,18 @@ const PageLayout: FC<LayoutProps> = ({ children, name, description }) => {
               </ul>
 
               <ul>
+                <li>For Business</li>
+              </ul>
+
+              <ul>
+                <li>Pricing</li>
+              </ul>
+
+              <ul>
+                <li>How it works</li>
+              </ul>
+
+              <ul>
                 <li>Contact Us</li>
               </ul>
 
@@ -192,7 +216,8 @@ const PageLayout: FC<LayoutProps> = ({ children, name, description }) => {
 
       <MainContainer>{children}</MainContainer>
 
-      <Footer />
+      {isBigScreen && <Footer />}
+      {isTabletOrMobile && <FooterHomeMobile />}
     </LayoutWrapper>
   );
 };

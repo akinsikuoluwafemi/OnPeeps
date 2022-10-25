@@ -16,6 +16,10 @@ const MapMockupTextWrapper = styled.div`
   align-items: center;
   padding: 5rem 3rem;
   // background; pink;
+
+  @media (max-width: 562px) {
+    padding: 5rem 2rem;
+  }
 `;
 
 const TextContainer = styled.div`
@@ -25,7 +29,7 @@ const TextContainer = styled.div`
 `;
 
 const BigText = styled.p`
-  font-size: 36px;
+  font-size: 35px;
   color: ${({ theme }) => theme.defaultTheme.primaryDefaultColor};
   font-weight: ${({ theme }) => theme.defaultTheme.fontWeightBold};
   //   text-align: center;
@@ -38,6 +42,7 @@ const SmallText = styled.p`
   font-size: 24px;
   font-weight: ${({ theme }) => theme.defaultTheme.fontWeightLight};
   color: #fff;
+  line-height: 32.4px;
 `;
 
 const MapMockupImgWrapper = styled.div`
@@ -56,7 +61,27 @@ const MapMockupImgWrapper = styled.div`
     width: 400px;
     border-radius: 10px;
     height: auto;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+
+    @media (max-width: 913px) {
+        width: auto;
+        // top: 510px;
+
+    }
+
+    @media (max-width: 768px) {
+      width: 500px; //come back here
+      height: auto;
+      transform: translate(-50%, -37%);
+    }
   }
+
+    @media (max-width: 562px) {
+    img {
+        width: 400px;
+      transform: translate(-50%, -43%);
+
+    }
 `;
 
 const HomeMapMockupMobile = () => {

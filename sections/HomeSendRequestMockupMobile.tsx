@@ -19,6 +19,11 @@ const InnerSection = styled.div`
   padding: 5rem 3rem;
   //   text-align: center;
   //   width: 700px;
+
+  @media (max-width: 562px) {
+    padding: 3rem 2rem;
+    padding-top: 0rem;
+  }
 `;
 
 const InnerSectionBg = styled.div`
@@ -37,12 +42,18 @@ const InnerSectionBg = styled.div`
     position: absolute;
     top: 281px;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-56%, -50%);
   }
+
+    @media (max-width: 562px) {
+    img {
+        top: 331px;
+        max-width: 400px;
+    }
 `;
 
 const BigText = styled.p`
-  font-size: 36px;
+  font-size: 35px;
   color: ${({ theme }) => theme.defaultTheme.primaryDefaultColor};
   font-weight: ${({ theme }) => theme.defaultTheme.fontWeightBold};
   //   text-align: center;
@@ -54,6 +65,7 @@ const SmallText = styled.p`
   font-size: 24px;
   font-weight: ${({ theme }) => theme.defaultTheme.fontWeightLight};
   color: #000;
+  line-height: 32.4px;
 `;
 
 const HomeSendRequestMockupMobile = () => {
