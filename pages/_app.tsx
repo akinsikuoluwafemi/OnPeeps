@@ -10,7 +10,9 @@ import { theme } from "utils/Theme";
 import { AnimatePresence } from "framer-motion";
 // import "locomotive-scroll/dist/locomotive-scroll.css";
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+import React, { Component } from "react";
+
+function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
@@ -25,3 +27,5 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     </Provider>
   );
 }
+
+export default MyApp;
