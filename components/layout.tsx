@@ -63,20 +63,18 @@ const Sidebar = styled.div<{ open: boolean }>`
 
   // transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 
-  // @media (max-width: 425px) {
-  //   width: 100%;
-  //   height: 100%;
-  // }
-  @media only screen and (max-device-width: 425px) {
+  @media (max-width: 500px) {
     width: 100%;
     height: 100%;
     overflow: hidden;
     min-height: 100vh;
   }
-
-  body {
-    overflow: ${({ open }) => (open ? "hidden" : "auto")};
-  }
+  // @media only screen and (max-device-width: 550px) {
+  //   width: 100%;
+  //   height: 100%;
+  //   overflow: hidden;
+  //   min-height: 100vh;
+  // }
 `;
 
 const SidebarContent = styled.div`
