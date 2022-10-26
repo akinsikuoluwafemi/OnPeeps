@@ -27,7 +27,7 @@ export default function Home() {
 
   return (
     <PageLayout
-      style={{ overflow: "hidden" }}
+      style={{ overflow: "hidden", minHeight: "100vh" }}
       name="OnPeeps / A fast, safe and reliable way to facilitate exchanged acts of kindness.
     "
     >

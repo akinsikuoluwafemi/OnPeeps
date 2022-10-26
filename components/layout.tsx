@@ -70,6 +70,12 @@ const Sidebar = styled.div<{ open: boolean }>`
   @media only screen and (max-device-width: 425px) {
     width: 100%;
     height: 100%;
+    overflow: hidden;
+    min-height: 100vh;
+  }
+
+  body {
+    overflow: ${({ open }) => (open ? "hidden" : "auto")};
   }
 `;
 
