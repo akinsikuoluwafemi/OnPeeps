@@ -49,15 +49,17 @@ const Sidebar = styled.div<{ open: boolean }>`
   display: flex;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+  // box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
   padding: 2rem;
   transform: ${({ open }) => (open ? "translateX(0)" : "translateX(100%)")};
   transition: transform 0.3s ease-in-out;
   z-index: 1200;
   flex: 1 0 auto;
   overflow-y: auto;
-  // box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 10px -5px,
-  //   rgba(0, 0, 0, 0.14) 0px 16px 24px 2px, rgba(0, 0, 0, 0.12) 0px 6px 30px 5px;
+  // box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 10px -5px;
+  // rgba(0, 0, 0, 0.14) 0px 16px 24px 2px, rgba(0, 0, 0, 0.12) 0px 6px 30px 5px;
+  box-shadow: ${({ open }) =>
+    open ? `0 0 10px 1000px rgba(0, 0, 0, 0.5)` : ``};
 
   // transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 `;
@@ -150,11 +152,11 @@ const PageLayout: FC<LayoutProps> = ({ children, name, description }) => {
         {description && <meta name="description" content={description}></meta>}
         <link rel="icon" href="/images/cover.png" />
       </Head>
-      <div
+      {/* <div
         onClick={() => dispatch(toggleSidebar())}
         style={{ display: open ? "block" : "none", overflow: "hidden" }}
         className="backdrop"
-      ></div>
+      ></div> */}
 
       {isBigScreen && <Navbar />}
       {isTabletOrMobile && <NavbarMobile />}
