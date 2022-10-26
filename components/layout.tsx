@@ -62,6 +62,10 @@ const Sidebar = styled.div<{ open: boolean }>`
     open ? `0 0 10px 1000px rgba(0, 0, 0, 0.5)` : ``};
 
   // transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+
+  @media (max-width: 425px) {
+    width: 100%;
+  }
 `;
 
 const SidebarContent = styled.div`
