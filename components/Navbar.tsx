@@ -2,6 +2,7 @@ import React, { useLayoutEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 
 import Button from "utils/Buttons";
 import gsap from "gsap";
@@ -53,12 +54,34 @@ const MenuItems = styled.li`
 `;
 
 const Navbar = () => {
+  const router = useRouter();
+  // console.log(router.pathname);
+
+  const path = [
+    {
+      name: "For Business",
+      path: "/business",
+    },
+    {
+      name: "Pricing",
+      path: "/pricing",
+    },
+    {
+      name: "how it works",
+      path: "/how-it-works",
+    },
+    {
+      name: "Contact",
+      path: "/contact",
+    },
+  ];
+
   gsap.registerPlugin(ScrollTrigger);
 
   const navRef = useRef<HTMLDivElement>(null);
 
   // fix an issue with gsap and nextjs
-  React.useLayoutEffect = React.useEffect;
+  // React.useLayoutEffect = React.useEffect;
 
   // useLayoutEffect(() => {
   //   const nav = navRef.current;
@@ -92,25 +115,34 @@ const Navbar = () => {
             <a>
               <img
                 style={{ height: "40px", width: "40px" }}
-                src="images/cover.png"
+                src="../images/cover.png"
               />
             </a>
           </Link>
         </MenuItems>
         <MenuItems>
-          <a href="#">For Business</a>
-          <a href="#">Pricing</a>
-          <a href="#">How it works</a>
-          <Link href="/contact">
-            <a>Contact Us</a>
-          </Link>
+          {path.map((item, index) => {
+            return (
+              <Link href={item.path} key={index}>
+                <a
+                  style={{
+                    fontWeight: `${
+                      item.path === router.pathname ? "bold" : "light"
+                    }`,
+                  }}
+                >
+                  {item.name}
+                </a>
+              </Link>
+            );
+          })}
         </MenuItems>
         <MenuItems>
-          <Button variant="primary">
-            <Link href="/signup">
+          <Link href="/auth/signup">
+            <Button variant="primary">
               <a>&nbsp; Sign Up &nbsp;</a>
-            </Link>
-          </Button>
+            </Button>
+          </Link>
         </MenuItems>
       </MenuItem>
     </NavContainer>

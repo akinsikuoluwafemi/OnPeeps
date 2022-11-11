@@ -1,5 +1,8 @@
+import bcrypt from "bcrypt";
+import db from "db";
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import nc from "next-connect";
+import { QueryArrayResult } from "pg";
 import signUp from ".";
 
 interface ExtendedRequest {
@@ -29,29 +32,44 @@ declare module "next" {
   }
 }
 
-export default handler.get<ExtendedRequest | NextApiResponse>(
+export default handler.post<ExtendedRequest | NextApiResponse>(
   async (req, res, next) => {
-    // next();
-    req.user = "test";
+    try {
+      const otpHolder: QueryArrayResult<any[]> | any = await db.query(
+        "SELECT * FROM otps where otp_number = $1",
+        [req.body.otp_number]
+      );
+      const otpTime = otpHolder.rows[0]?.timestamp;
 
-    console.log(JSON.stringify(req.unAuthUser), "verify");
+      const getMinDiff = (startDate: any, endDate: any): number => {
+        const msInMinute = 60 * 1000;
 
-    res.status(200).json({
-      message: "Success",
-      data: [
-        {
-          userId: 1,
-          id: 2,
-          title: "qui est esse",
-          body: "est rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea dolores neque\nfugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis\nqui aperiam non debitis possimus qui neque nisi nulla",
-        },
-        {
-          userId: 1,
-          id: 3,
-          title: "ea molestias quasi exercitationem repellat qui ipsa sit aut",
-          body: "et iusto sed quo iure\nvoluptatem occaecati omnis eligendi aut ad\nvoluptatem doloribus vel accusantium quis pariatur\nmolestiae porro eius odio et labore et velit aut",
-        },
-      ],
-    });
+        return Math.round(Math.abs(endDate - startDate) / msInMinute);
+      };
+
+      console.log(getMinDiff(new Date(), otpTime));
+
+      // if the timestamps is more than 5 minutes ago
+      if (getMinDiff(new Date(), otpTime) > 5 || otpHolder.rows.length === 0) {
+        return res.status(400).json({
+          message: "OTP expired",
+          status: "expired",
+        });
+      } else {
+        const isMatch = bcrypt.compareSync(req.body.otp, otpHolder.rows[0].otp);
+        if (isMatch) {
+          console.log(req.body.user);
+          // send the user to the backend to create the user in the database and send the user a cookie to the frontend to log them in
+          res.send("user sent to the backend");
+        } else {
+          return res.status(400).json({
+            message: "OTP does not match",
+            status: "invalid",
+          });
+        }
+      }
+    } catch (err: any) {
+      console.log(err);
+    }
   }
 );

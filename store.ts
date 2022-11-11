@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import counterReducer from "./slices/counterSlice";
 import sidebarReducer from "./slices/sidebarSlice";
+import currentUserReducer from "./slices/currentUserSlice";
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
     sidebar: sidebarReducer,
+    currentUser: currentUserReducer,
     // posts: postsReducer,
     // comments: commentsReducer,
     // users: usersReducer

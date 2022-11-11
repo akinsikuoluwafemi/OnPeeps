@@ -9,6 +9,7 @@ import { theme } from "utils/Theme";
 // import { LocomotiveScrollProvider } from "react-locomotive-scroll";
 import { AnimatePresence } from "framer-motion";
 // import "locomotive-scroll/dist/locomotive-scroll.css";
+import "react-toastify/dist/ReactToastify.css";
 
 import React, { Component } from "react";
 

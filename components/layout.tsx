@@ -33,9 +33,12 @@ interface LayoutProps {
   name: string;
   description?: string;
   style?: React.CSSProperties;
+  showFooter?: boolean;
 }
 
-const LayoutWrapper = styled.div``;
+const LayoutWrapper = styled.div`
+  // min-height: 100vh;
+`;
 
 const Sidebar = styled.div<{ open: boolean }>`
   // font-size: 25px;
@@ -145,7 +148,12 @@ const SidebarContent = styled.div`
 
 `;
 
-const PageLayout: FC<LayoutProps> = ({ children, name, description }) => {
+const PageLayout: FC<LayoutProps> = ({
+  children,
+  name,
+  description,
+  showFooter,
+}) => {
   const open = useSelector(selectOpen);
   const dispatch = useDispatch();
 
@@ -231,8 +239,12 @@ const PageLayout: FC<LayoutProps> = ({ children, name, description }) => {
 
       <MainContainer>{children}</MainContainer>
 
-      {isBigScreen && <Footer />}
-      {isTabletOrMobile && <FooterHomeMobile />}
+      {showFooter && (
+        <>
+          {isBigScreen && <Footer />}
+          {isTabletOrMobile && <FooterHomeMobile />}
+        </>
+      )}
     </LayoutWrapper>
   );
 };

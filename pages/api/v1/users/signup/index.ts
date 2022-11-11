@@ -73,19 +73,32 @@ const signUp = handler.post<ExtendedRequest | NextApiResponse>(
           [hashedOTP, number]
         );
         console.log(newOTP.rows[0]);
+        // if its created
         if (newOTP.rows.length > 0) {
           // send the otp to the user
           try {
             const msg = {
               to: req.body.email,
               from: process.env.FROM_EMAIL,
-              subject: "OTP",
-              text: `Kindly use this OTP to verify your email: ${OTP}`,
-              html: `<h1>Your OTP is ${OTP}</h1>
-              <p>Thank you</p>
-              <p>OnPeeps</p>
-              <p>https://onpeeps.com</p>
-              <small> This is an automated email, please do not reply to this email</small>
+              subject: "Your OTP",
+              text: `Hello ${req.body.email}, your OTP is ${OTP}`,
+              html: `<div style="font-family: Helvetica,Arial,sans-serif;min-width:100%;overflow:auto;line-height:2">
+              <div style="margin:50px auto;width:70%;padding:20px 0">
+                <div style="border-bottom:1px solid #eee">
+                  <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">OnPeeps</a>
+                </div>
+                <p style="font-size:1.1em">Hi,</p>
+                <p>Thank you for choosing OnPeeps. Use the following OTP to complete your Sign Up procedures. OTP is valid for 5 minutes</p>
+                <h2 style="background: #00466a;margin: 0 auto;width: 100%;padding: 0 10px; text-align: center; color: #fff;border-radius: 4px;">${OTP}</h2>
+                <p style="font-size:0.9em;">Regards,<br />OnPeeps</p>
+                <hr style="border:none;border-top:1px solid #eee" />
+                <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
+                  <p>Onpeeps Inc</p>
+                  <p>1600 Amphitheatre Parkway</p>
+                  <p>UK</p>
+                </div>
+              </div>
+            </div>
               `,
             };
             const sentEmail = await sgMail.send(msg);
