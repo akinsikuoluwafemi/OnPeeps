@@ -23,11 +23,13 @@ const Section = styled.section`
 
   @media (min-width: 1500px) {
     justify-content: flex-start;
+    gap: 2rem;
   }
 
   @media (max-width: 768px) {
     margin: 3rem auto;
     padding: 2rem 0;
+    gap: 2rem;
   }
 
   h1 {
@@ -119,6 +121,7 @@ const VerifyEmail: FC = () => {
         <img src="../images/padlock.svg" alt="otp-image" />
 
         <h1>Enter Code</h1>
+        <small>Code expires in 5mins.</small>
 
         <p>
           We sent an OTP code to your email

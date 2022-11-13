@@ -229,7 +229,7 @@ const Signup = () => {
   useEffect(() => {
     dispatch(setCurrentUser({ user: formValues }));
     // console.log("changing user to empty");
-  }, [user]);
+  }, []);
 
   const numberToVerifyOtp = uuidv4();
 
@@ -417,7 +417,10 @@ const Signup = () => {
                 file &&
                 uploadError === null
               ) {
+                dispatch(setLoading(true));
+
                 submitForm();
+                dispatch(setLoading(false));
               } else {
                 dispatch(setError("error in file upload"));
                 console.log("error in file upload");
