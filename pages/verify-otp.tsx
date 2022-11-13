@@ -5,8 +5,10 @@ import Button from "../utils/Buttons";
 import PageLayout from "../components/layout";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { selectCurrentUser } from "slices/currentUserSlice";
-import { useSelector } from "react-redux";
+import { selectCurrentUser, setCurrentUser } from "slices/currentUserSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { notify } from "utils/errors";
+import { ToastContainer } from "react-toastify";
 
 const Section = styled.section`
   min-height: 100vh;
@@ -36,6 +38,15 @@ const Section = styled.section`
   p {
     font-size: 25px;
     font-weight: 300;
+
+    span {
+      color: #1c3879;
+      font-weight: 500;
+      margin-left: 1rem;
+      font-size: 20px;
+      cursor: pointer;
+      border-bottom: 1px solid #1c3879;
+    }
   }
 `;
 
@@ -44,41 +55,18 @@ const VerifyEmail: FC = () => {
   const router = useRouter();
   console.log(router);
   const user = useSelector(selectCurrentUser);
+  const dispatch = useDispatch();
 
-  // ||
-  // JSON.parse(localStorage.getItem("user") || "{}");
-
-  // useEffect(() => {
-  //   localStorage.setItem("user", JSON.stringify(user));
-  // }, [user && user]);
-
-  console.log("user", user);
+  // check to see if there is an email in local storage, or the properties of the user object in local storage is less than 3
+  useEffect(() => {
+    if (Object.keys(user).length < 3 || !user?.email) {
+      router.push("/auth/signup");
+    }
+  }, []);
+  console.log(user);
 
   const handleChange = (otp: React.SetStateAction<string>) => setOtp(otp);
   console.log(otp);
-
-  // const handleUpload = async () => {
-  //   try {
-  //     if (!file) return;
-  //     setLoading(true);
-
-  //     const formData = new FormData();
-  //     formData.append("file", file);
-
-  //     const { data } = await axios.post(
-  //       "http://localhost:3000/api/v1/upload",
-  //       formData
-  //     );
-
-  //     setFormValues({ ...formValues, file: data.result.secure_url });
-
-  //     // console.log(data.result);
-
-  //     setLoading(false);
-  //   } catch (error: any) {
-  //     console.log(error);
-  //   }
-  // };
 
   const verifyOtp = async () => {
     try {
@@ -91,8 +79,37 @@ const VerifyEmail: FC = () => {
         }
       );
       console.log(data);
-    } catch (error: any) {
-      console.log(error);
+      if (data.status === "success") {
+        notify("Email Verified", "success", "bottom-left", "light");
+
+        dispatch(setCurrentUser({ user: data.user }));
+
+        router.replace("/auth/signin");
+      } else {
+        console.log("error");
+        notify("Failed to verify email", "error", "bottom-left", "light");
+      }
+    } catch (err: any) {
+      console.log(err);
+      notify(err.response.data.message, "error", "bottom-left", "light");
+    }
+  };
+
+  const resendOtp = async () => {
+    try {
+      const { data } = await axios.post(`/api/v1/resendOtp`, {
+        email: user.email,
+        otp_number: router.query.otp_number,
+      });
+      console.log(data);
+      if (data.status === "success") {
+        notify(data.message, "success", "bottom-left", "light");
+      } else {
+        notify(data.message, "error", "bottom-left", "light");
+      }
+    } catch (err: any) {
+      console.log(err);
+      notify(err.response.data.message, "error", "bottom-left", "light");
     }
   };
 
@@ -103,7 +120,10 @@ const VerifyEmail: FC = () => {
 
         <h1>Enter Code</h1>
 
-        <p>We sent an OTP code to your email</p>
+        <p>
+          We sent an OTP code to your email
+          <span onClick={resendOtp}>Send Again</span>
+        </p>
 
         <OtpInput
           inputStyle={{
@@ -134,6 +154,7 @@ const VerifyEmail: FC = () => {
         >
           Verify Email
         </Button>
+        <ToastContainer />
       </Section>
     </PageLayout>
   );

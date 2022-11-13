@@ -1,18 +1,19 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "./slices/counterSlice";
-import sidebarReducer from "./slices/sidebarSlice";
-import currentUserReducer from "./slices/currentUserSlice";
+import rootReducer, { persistConfig } from "./slices";
+
+import storage from "redux-persist/lib/storage";
+import { persistReducer, persistStore } from "redux-persist";
+import thunk from "redux-thunk";
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  reducer: {
-    counter: counterReducer,
-    sidebar: sidebarReducer,
-    currentUser: currentUserReducer,
-    // posts: postsReducer,
-    // comments: commentsReducer,
-    // users: usersReducer
-  },
+  reducer: persistedReducer,
+  // devTools: process.env.NODE_ENV !== "production",
+  middleware: [thunk],
 });
+
+export const persistor = persistStore(store);
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

@@ -18,6 +18,7 @@ import HomeMapMockupMobile from "sections/HomeMapMockupMobile";
 import HomeVideoMockupMobile from "sections/HomeVideoMockupMobile";
 import styled, { keyframes } from "styled-components";
 import { useEffect, useState } from "react";
+import { selectCurrentUser, setCurrentUser } from "slices/currentUserSlice";
 
 const SplashScreenLogo = keyframes`
   0% {
@@ -62,7 +63,15 @@ const SplashScreen = styled.div`
 export default function Home() {
   // const count = useSelector(selectValue);
 
+  // const user = useSelector(selectCurrentUser);
+  const dispatch = useDispatch();
+
   // const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setCurrentUser({ user: null }));
+    // console.log("changing user to empty");
+  }, []);
 
   const isBigScreen = useMediaQuery({ query: "(min-width: 1024px)" });
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1023px)" });

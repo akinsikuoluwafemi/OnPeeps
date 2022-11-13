@@ -19,8 +19,8 @@ import {
   setCurrentUser,
   setLoading,
   setError,
-  currentUserLoading,
-  currentUserError,
+  selectCurrentLoading,
+  selectCurrentError,
 } from "slices/currentUserSlice";
 
 const fileTypes = ["JPG", "PNG", "PDF", "DOC", "DOCX", "XLS", "XLSX", "JPEG"];
@@ -208,6 +208,8 @@ const Signup = () => {
   };
 
   const user = useSelector(selectCurrentUser);
+  const loading = useSelector(selectCurrentLoading);
+  const uploadError = useSelector(selectCurrentError);
   // save the user in local storage
 
   const [formValues, setFormValues] = useState(initialValues);
@@ -224,12 +226,14 @@ const Signup = () => {
     setFile(file);
   };
 
-  // console.log(file && file.name);
+  useEffect(() => {
+    dispatch(setCurrentUser({ user: formValues }));
+    // console.log("changing user to empty");
+  }, [user]);
 
   const numberToVerifyOtp = uuidv4();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const handleChange = (
     e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -306,11 +310,10 @@ const Signup = () => {
   };
 
   useEffect(() => {
-    if (Object.keys(formErrors).length === 0 && isSubmitting) {
+    if (Object.keys(formErrors).length === 0 && isSubmitting && !uploadError) {
       submitForm();
     }
   }, [formErrors]);
-  // console.log(formErrors);
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -319,60 +322,74 @@ const Signup = () => {
   const handleUpload = async () => {
     try {
       if (!file) return;
-      setLoading(true);
-
+      // dispatch(setLoading(true));
       const formData = new FormData();
       formData.append("file", file);
-
       const { data } = await axios.post(
         "http://localhost:3000/api/v1/upload",
         formData
       );
-
       setFormValues({ ...formValues, file: data.result.secure_url });
-
-      // console.log(data.result);
-
-      setLoading(false);
+      // dispatch(setLoading(false));
     } catch (error: any) {
+      // dispatch(setLoading(false));
       console.log(error);
+      dispatch(setError(error.response.data.message));
+      notify(error.response.data.message, "error", "bottom-left", "light");
     }
   };
+
+  useEffect(() => {
+    if (!file) return;
+
+    if (file.length > 0) return;
+
+    handleUpload();
+  }, [file]);
 
   // / this fires if all checks are passed
   const submitForm = async () => {
     // do the try catch and submit here
 
     try {
-      if (Object.keys(formErrors).length === 0 && isSubmitting) {
-        // handleUpload();
-        console.log(formValues);
-
+      if (
+        Object.keys(formErrors).length === 0 &&
+        isSubmitting &&
+        uploadError === null
+      ) {
         // try and sign up the user and send otp_number and email in a post request
-        const { data } = await axios.post(
-          "http://localhost:3000/api/v1/users/signup",
-          {
-            otp_number: numberToVerifyOtp,
-            email: formValues.email,
-          }
-        );
-        console.log(data);
-        if (data.status === "success") {
-          console.log(formValues);
-          // console.log("this is firing");
-          dispatch(setCurrentUser({ user: formValues }));
 
-          router.push(
+        if (uploadError !== null) {
+          return;
+        } else {
+          dispatch(setLoading(true));
+
+          const { data } = await axios.post(
+            "http://localhost:3000/api/v1/users/signup",
+            {
+              otp_number: numberToVerifyOtp,
+              email: formValues.email,
+            }
+          );
+          console.log(data);
+          dispatch(setLoading(false));
+          notify(data.message, "success", "bottom-left", "light");
+
+          router.replace(
             `/verify-otp?email=${formValues.email}&otp_number=${numberToVerifyOtp}`
           );
         }
       }
     } catch (err: any) {
-      setLoading(false);
+      dispatch(setLoading(false));
+      dispatch(setError(err.response.data.message));
+
       notify(err.response.data.message, "error", "bottom-left", "light");
       console.log(err.response.data.message);
     }
   };
+  console.log(uploadError);
+  console.log(typeof uploadError);
   return (
     <PageLayout name="Signup / OnPeeps">
       <Section>
@@ -389,15 +406,27 @@ const Signup = () => {
             autoComplete="on"
             onSubmit={(e) => {
               e.preventDefault();
-              const formData = { ...formValues, file };
-              setFormErrors(validate(formData));
-              setFormValues(formData);
+              setFormErrors(validate(formValues));
+              setFormValues(formValues);
+              dispatch(setCurrentUser({ user: formValues }));
 
-              // setFormErrors(validate(formValues));
               setIsSubmitting(true);
-              if (Object.keys(formErrors).length === 0 && isSubmitting) {
+              if (
+                Object.keys(formErrors).length === 0 &&
+                isSubmitting &&
+                file &&
+                uploadError === null
+              ) {
                 submitForm();
-                dispatch(setCurrentUser({ user: formValues }));
+              } else {
+                dispatch(setError("error in file upload"));
+                console.log("error in file upload");
+                notify(
+                  "error in file upload or form validation",
+                  "error",
+                  "bottom-left",
+                  "light"
+                );
               }
             }}
           >
@@ -483,6 +512,7 @@ const Signup = () => {
                 name="file"
                 types={fileTypes}
                 label="Upload/Drop Govt. approved ID right here"
+                style={{ borderColor: "red" }}
                 multiple={false}
                 onTypeErr={(err: any) => {
                   console.log(err);
@@ -504,6 +534,11 @@ const Signup = () => {
 
             <BtnWrapper>
               <Button
+                style={{
+                  width: "100%",
+                  padding: "15px 0",
+                  fontSize: "1.2rem",
+                }}
                 disabled={loading}
                 className="signup-btn"
                 variant="primary"
@@ -516,6 +551,7 @@ const Signup = () => {
                 ) : (
                   "Signup"
                 )}
+                {/* Signup */}
               </Button>
             </BtnWrapper>
 

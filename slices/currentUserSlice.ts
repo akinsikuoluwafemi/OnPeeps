@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "store";
 
 export interface CurrentUserState {
-  user?: {
+  user: {
     id: number;
     name?: string;
     username?: string;
@@ -18,8 +18,6 @@ export interface CurrentUserState {
 
   loading?: boolean;
   error?: string | null;
-
-  success?: boolean;
 }
 
 const initialState: CurrentUserState = {
@@ -37,21 +35,24 @@ const initialState: CurrentUserState = {
   },
   loading: false,
   error: null,
-  success: false,
 };
 
 export const currentUserSlice = createSlice({
   name: "currentUser",
   initialState,
   reducers: {
-    setCurrentUser: (state, action: PayloadAction<CurrentUserState>) => {
+    setCurrentUser: (state, action: PayloadAction<CurrentUserState | any>) => {
       state.user = action.payload.user;
+      state.error = null;
+      state.loading = false;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
+      state.error = null;
     },
     setError: (state, action: PayloadAction<string | null>) => {
       state.error = action.payload;
+      state.loading = false;
     },
   },
 
@@ -63,9 +64,9 @@ export const { setCurrentUser, setLoading, setError } =
 
 // getting a chunk of state  from the store itself
 
-export const selectCurrentUser = (state: RootState) => state.currentUser.user;
-export const currentUserLoading = (state: RootState) =>
+export const selectCurrentUser = (state: RootState) => state.currentUser?.user;
+export const selectCurrentLoading = (state: RootState) =>
   state.currentUser.loading;
-export const currentUserError = (state: RootState) => state.currentUser.error;
+export const selectCurrentError = (state: RootState) => state.currentUser.error;
 
 export default currentUserSlice.reducer;

@@ -5,7 +5,7 @@ export interface MyContactFormValues {
 }
 export interface SignupFormValues {
   username: string;
-  email: string;
+  email: string | undefined;
   password: string;
   file: File | any;
   confirm_password: "";

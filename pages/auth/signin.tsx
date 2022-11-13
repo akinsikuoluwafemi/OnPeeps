@@ -7,6 +7,8 @@ import { SignInformValues, SignupFormValues } from "utils/FormValues";
 import Button from "utils/Buttons";
 import { FileUploader } from "react-drag-drop-files";
 import { BiShowAlt, BiHide } from "react-icons/bi";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCurrentUser, setCurrentUser } from "slices/currentUserSlice";
 
 // 1Fakinsiku_#
 const Section = styled.section`
@@ -142,21 +144,19 @@ const InputWrapper = styled.div`
 `;
 
 const SignIn = () => {
-  const initialValues = {
-    username: "",
-    email: "",
+  const unSignedInUser = useSelector(selectCurrentUser);
+  console.log("unSignedInUser", unSignedInUser);
+
+  const initialValues: SignInformValues = {
+    email: "" || unSignedInUser?.email,
     password: "",
-    confirm_password: "",
-    file: {},
   };
 
   const [formValues, setFormValues] = useState(initialValues);
-
+  const dispatch = useDispatch();
   const [formErrors, setFormErrors] = useState<
     React.SetStateAction<SignupFormValues | any>
   >({});
-
-  const [file, setFile] = useState(null as any);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -195,6 +195,10 @@ const SignIn = () => {
 
   const [showPassword, setShowPassword] = useState(false);
 
+  useEffect(() => {
+    dispatch(setCurrentUser({ user: formValues }));
+  }, [unSignedInUser]);
+
   return (
     <PageLayout name="SignIn / OnPeeps">
       <Section>
@@ -211,9 +215,8 @@ const SignIn = () => {
             autoComplete="on"
             onSubmit={(e) => {
               e.preventDefault();
-              const formData = { ...formValues, file };
-              setFormErrors(validate(formData));
-              setFormValues(formData);
+              setFormErrors(validate(formValues));
+              setFormValues(formValues);
               // setFormErrors(validate(formValues));
               setIsSubmitting(true);
               if (Object.keys(formErrors).length === 0 && isSubmitting) {
@@ -266,7 +269,16 @@ const SignIn = () => {
                 marginTop: "5rem",
               }}
             >
-              <Button className="signup-btn" variant="primary" type="submit">
+              <Button
+                style={{
+                  width: "100%",
+                  padding: "15px 0",
+                  fontSize: "1.2rem",
+                }}
+                className="signup-btn"
+                variant="primary"
+                type="submit"
+              >
                 Sign In
               </Button>
             </div>

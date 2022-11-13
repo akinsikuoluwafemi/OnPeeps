@@ -4,6 +4,7 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import nc from "next-connect";
 import { QueryArrayResult } from "pg";
 import signUp from ".";
+import jwt from "jsonwebtoken";
 
 interface ExtendedRequest {
   user: any;
@@ -58,9 +59,51 @@ export default handler.post<ExtendedRequest | NextApiResponse>(
       } else {
         const isMatch = bcrypt.compareSync(req.body.otp, otpHolder.rows[0].otp);
         if (isMatch) {
-          console.log(req.body.user);
-          // send the user to the backend to create the user in the database and send the user a cookie to the frontend to log them in
-          res.send("user sent to the backend");
+          const salt = await bcrypt.genSalt(10);
+          const user = req.body.user;
+          const hashedPassword = await bcrypt.hash(user.password, salt);
+          const hashedConfirmPassword = await bcrypt.hash(
+            user.confirm_password,
+            salt
+          );
+
+          const result = await db.query(
+            "INSERT INTO users (username, email, password, confirm_password, id_card_picture, cell_phone, verified) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+            [
+              user.username,
+              user.email,
+              hashedPassword,
+              hashedConfirmPassword,
+              user.file,
+              user.cell_phone,
+              user.verified,
+            ]
+          );
+
+          const userResult = result.rows[0];
+          console.log("userResult", userResult);
+
+          // const token = jwt.sign(
+          //   {
+          //     id: userResult.id,
+          //     username: userResult.username,
+          //     email: userResult.email,
+          //     cell_phone: userResult.cell_phone,
+          //     verified: userResult.verified,
+          //   },
+          //   process.env.JWT_SECRET,
+          //   {
+          //     expiresIn: "1d",
+          //   }
+          // );
+
+          res.status(200).json({
+            message: "User created successfully",
+            status: "success",
+            user: {
+              email: user.email,
+            },
+          });
         } else {
           return res.status(400).json({
             message: "OTP does not match",

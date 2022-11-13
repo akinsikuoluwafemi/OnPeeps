@@ -103,16 +103,11 @@ const signUp = handler.post<ExtendedRequest | NextApiResponse>(
             };
             const sentEmail = await sgMail.send(msg);
             if (sentEmail) {
-              res.status(200).json({
+              res.status(201).json({
                 status: "success",
                 message: "OTP sent successfully",
               });
 
-              // console.log(sentEmail);
-
-              const unAuthUser = req.body;
-              req.unAuthUser = unAuthUser;
-              next();
               // console.log(req.unAuthUser, +"unAuthUser");
             }
           } catch (error) {

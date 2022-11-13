@@ -1,7 +1,9 @@
 import "@/styles/global.css";
 import { useRef, useState } from "react";
 import type { AppProps } from "next/app";
-import { store } from "../store";
+import { store, persistor } from "../store";
+import { PersistGate } from "redux-persist/integration/react";
+
 import { Provider } from "react-redux";
 import GlobalStyles from "@/styles/GlobalStyles";
 import { ThemeProvider } from "styled-components";
@@ -16,15 +18,17 @@ import React, { Component } from "react";
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <GlobalStyles />
+      <PersistGate loading={null} persistor={persistor}>
+        <ThemeProvider theme={theme}>
+          <GlobalStyles />
 
-        <AnimatePresence>
-          <main>
-            <Component {...pageProps} />
-          </main>
-        </AnimatePresence>
-      </ThemeProvider>
+          <AnimatePresence>
+            <main>
+              <Component {...pageProps} />
+            </main>
+          </AnimatePresence>
+        </ThemeProvider>
+      </PersistGate>
     </Provider>
   );
 }
