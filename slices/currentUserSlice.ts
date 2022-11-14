@@ -33,6 +33,7 @@ const initialState: CurrentUserState = {
     verified: false,
     id: 0,
   },
+
   loading: false,
   error: null,
 };

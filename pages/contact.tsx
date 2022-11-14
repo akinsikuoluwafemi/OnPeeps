@@ -2,8 +2,8 @@ import PageLayout from "@/components/layout";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Button from "utils/Buttons";
-import { Formik, Field, Form } from "formik";
-import * as Yup from "yup";
+// import { Formik, Field, Form } from "formik";
+// import * as Yup from "yup";
 import Input from "utils/Input";
 import { MyContactFormValues } from "utils/FormValues";
 
@@ -191,17 +191,17 @@ const RightSideWrapper = styled.div`
   }
 `;
 
-const ContactSchema = Yup.object().shape({
-  name: Yup.string()
-    .min(2, "Too Short!")
-    .max(50, "Too Long!")
-    .required("Required"),
-  email: Yup.string().email("Invalid email").required("Required"),
-  message: Yup.string()
-    .min(2, "Too Short!")
-    .max(500, "Too Long!")
-    .required("Required"),
-});
+// const ContactSchema = Yup.object().shape({
+//   name: Yup.string()
+//     .min(2, "Too Short!")
+//     .max(50, "Too Long!")
+//     .required("Required"),
+//   email: Yup.string().email("Invalid email").required("Required"),
+//   message: Yup.string()
+//     .min(2, "Too Short!")
+//     .max(500, "Too Long!")
+//     .required("Required"),
+// });
 
 const contact = () => {
   const initialValues: MyContactFormValues = {

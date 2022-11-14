@@ -61,8 +61,8 @@ const VerifyEmail: FC = () => {
 
   // check to see if there is an email in local storage, or the properties of the user object in local storage is less than 3
   useEffect(() => {
-    if (Object.keys(user).length < 3 || !user?.email) {
-      router.push("/auth/signup");
+    if (!user?.email) {
+      router.replace("/auth/signup");
     }
   }, []);
   console.log(user);
@@ -83,6 +83,7 @@ const VerifyEmail: FC = () => {
       console.log(data);
       if (data.status === "success") {
         notify("Email Verified", "success", "bottom-left", "light");
+        console.log(data.user.email);
 
         dispatch(setCurrentUser({ user: data.user }));
 

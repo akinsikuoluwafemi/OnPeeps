@@ -22,6 +22,7 @@ import {
   selectCurrentLoading,
   selectCurrentError,
 } from "slices/currentUserSlice";
+import jwt from "jsonwebtoken";
 
 const fileTypes = ["JPG", "PNG", "PDF", "DOC", "DOCX", "XLS", "XLSX", "JPEG"];
 // 1Fakinsiku_#
@@ -306,6 +307,7 @@ const Signup = () => {
     ) {
       errors = { ...errors, file: "File type is invalid" };
     }
+
     return errors;
   };
 
@@ -329,10 +331,20 @@ const Signup = () => {
         "http://localhost:3000/api/v1/upload",
         formData
       );
-      setFormValues({ ...formValues, file: data.result.secure_url });
+
+      if (data) {
+        setFormValues({ ...formValues, file: data.result.secure_url });
+
+        dispatch(
+          setCurrentUser({
+            user: { ...formValues, file: data.result.secure_url },
+          })
+        );
+      }
       // dispatch(setLoading(false));
     } catch (error: any) {
       // dispatch(setLoading(false));
+      console.log(error.response.data.message);
       console.log(error);
       dispatch(setError(error.response.data.message));
       notify(error.response.data.message, "error", "bottom-left", "light");
@@ -347,6 +359,8 @@ const Signup = () => {
     handleUpload();
   }, [file]);
 
+  console.log(formValues);
+
   // / this fires if all checks are passed
   const submitForm = async () => {
     // do the try catch and submit here
@@ -360,9 +374,23 @@ const Signup = () => {
         // try and sign up the user and send otp_number and email in a post request
 
         if (uploadError !== null) {
-          return;
+          // return; remove this later
+          dispatch(setLoading(false));
+
+          dispatch(setError("error in file upload"));
+          console.log("error in file upload");
+          notify(
+            "error in file upload or form validation",
+            "error",
+            "bottom-left",
+            "light"
+          );
         } else {
           dispatch(setLoading(true));
+
+          // let currUser = jwt.sign({ user }, "secret", {
+          //   expiresIn: "1d",
+          // });
 
           const { data } = await axios.post(
             "http://localhost:3000/api/v1/users/signup",
@@ -370,14 +398,22 @@ const Signup = () => {
               otp_number: numberToVerifyOtp,
               email: formValues.email,
             }
+            // {
+            //   headers: {
+            //     Authorization: `Bearer ${currUser}`,
+            //   },
+            // }
           );
           console.log(data);
           dispatch(setLoading(false));
           notify(data.message, "success", "bottom-left", "light");
-
-          router.replace(
-            `/verify-otp?email=${formValues.email}&otp_number=${numberToVerifyOtp}`
-          );
+          if (data.status === "success") {
+            setTimeout(() => {
+              router.replace(
+                `/verify-otp?email=${formValues.email}&otp_number=${numberToVerifyOtp}`
+              );
+            }, 1500);
+          }
         }
       }
     } catch (err: any) {
@@ -388,8 +424,11 @@ const Signup = () => {
       console.log(err.response.data.message);
     }
   };
+
+  console.log(user);
+
   console.log(uploadError);
-  console.log(typeof uploadError);
+
   return (
     <PageLayout name="Signup / OnPeeps">
       <Section>
@@ -421,7 +460,9 @@ const Signup = () => {
 
                 submitForm();
                 dispatch(setLoading(false));
-              } else {
+              } else if (uploadError !== null) {
+                dispatch(setLoading(false));
+
                 dispatch(setError("error in file upload"));
                 console.log("error in file upload");
                 notify(

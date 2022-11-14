@@ -19,6 +19,8 @@ import HomeVideoMockupMobile from "sections/HomeVideoMockupMobile";
 import styled, { keyframes } from "styled-components";
 import { useEffect, useState } from "react";
 import { selectCurrentUser, setCurrentUser } from "slices/currentUserSlice";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const SplashScreenLogo = keyframes`
   0% {
@@ -72,6 +74,19 @@ export default function Home() {
     dispatch(setCurrentUser({ user: null }));
     // console.log("changing user to empty");
   }, []);
+
+  const { data: session, status } = useSession();
+  console.log(session?.user);
+  console.log(status);
+
+  const router = useRouter();
+
+  // get the session in, and see if theres a session and redirect
+  useEffect(() => {
+    if (session?.user && status === "authenticated") {
+      router.replace("/feeds");
+    }
+  }, [session, status]);
 
   const isBigScreen = useMediaQuery({ query: "(min-width: 1024px)" });
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1023px)" });

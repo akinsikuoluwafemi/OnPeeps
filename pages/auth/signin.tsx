@@ -9,6 +9,9 @@ import { FileUploader } from "react-drag-drop-files";
 import { BiShowAlt, BiHide } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser, setCurrentUser } from "slices/currentUserSlice";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 // 1Fakinsiku_#
 const Section = styled.section`
@@ -144,8 +147,19 @@ const InputWrapper = styled.div`
 `;
 
 const SignIn = () => {
+  const { data: session, status } = useSession();
+  console.log(session?.user);
+  console.log(status);
+
   const unSignedInUser = useSelector(selectCurrentUser);
   console.log("unSignedInUser", unSignedInUser);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (session?.user && status === "authenticated") {
+      router.replace("/feeds");
+    }
+  }, [session, status]);
 
   const initialValues: SignInformValues = {
     email: "" || unSignedInUser?.email,
@@ -190,8 +204,21 @@ const SignIn = () => {
   // / this fires if all checks are passed
   const submitForm = async () => {
     // do the try catch and submit here
-    console.log(formValues);
+
+    const res = await signIn("credentials", {
+      redirect: false,
+      email: formValues.email,
+      password: formValues.password,
+    });
+    console.log(res);
+    if (res?.status === 200) {
+      router.replace("/feeds");
+    } else {
+      //
+    }
   };
+
+  console.log("unSignedInUser", unSignedInUser);
 
   const [showPassword, setShowPassword] = useState(false);
 

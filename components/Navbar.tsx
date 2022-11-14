@@ -8,6 +8,7 @@ import Button from "utils/Buttons";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { moveup } from "utils/Nav";
+import { signIn } from "next-auth/react";
 
 const NavContainer = styled.div`
   color: ${({ theme }) => theme.defaultTheme.primaryDefaultColor};
@@ -136,6 +137,7 @@ const Navbar = () => {
               </Link>
             );
           })}
+          {/* <p onClick={() => signIn()}>&nbsp; Sign in &nbsp;</p> */}
         </MenuItems>
         <MenuItems>
           <Link href="/auth/signup">

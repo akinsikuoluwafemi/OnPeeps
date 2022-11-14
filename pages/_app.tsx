@@ -13,9 +13,11 @@ import { AnimatePresence } from "framer-motion";
 // import "locomotive-scroll/dist/locomotive-scroll.css";
 import "react-toastify/dist/ReactToastify.css";
 
-import React, { Component } from "react";
+import React from "react";
+import { SessionProvider } from "next-auth/react";
+import { Session } from "next-auth";
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps<{ session: Session }>) {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
@@ -24,7 +26,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 
           <AnimatePresence>
             <main>
-              <Component {...pageProps} />
+              <SessionProvider session={pageProps.session}>
+                <Component {...pageProps} />
+              </SessionProvider>
             </main>
           </AnimatePresence>
         </ThemeProvider>
