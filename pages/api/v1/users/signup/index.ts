@@ -33,7 +33,7 @@ declare module "next" {
   export interface NextApiRequest {
     user?: any;
     body: any;
-    unAuthUser?: any;
+    headers: any;
   }
 }
 
@@ -51,6 +51,9 @@ const signUp = handler.post<ExtendedRequest | NextApiResponse>(
           message: "User already registered",
         });
       } else {
+        // const token = req.headers.authorization.split(" ")[1];
+        // console.log(token);
+
         const OTP = otpGenerator.generate(6, {
           digits: true,
           lowerCaseAlphabets: false,

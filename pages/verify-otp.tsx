@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import OtpInput from "react-otp-input";
 import styled from "styled-components";
 import Button from "../utils/Buttons";
@@ -9,6 +9,8 @@ import { selectCurrentUser, setCurrentUser } from "slices/currentUserSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { notify } from "utils/errors";
 import { ToastContainer } from "react-toastify";
+import jwt from "jsonwebtoken";
+import { useSession } from "next-auth/react";
 
 const Section = styled.section`
   min-height: 100vh;
@@ -59,16 +61,40 @@ const VerifyEmail: FC = () => {
   const user = useSelector(selectCurrentUser);
   const dispatch = useDispatch();
 
-  // check to see if there is an email in local storage, or the properties of the user object in local storage is less than 3
+  const { data: session, status } = useSession();
+  console.log(session?.user);
+  console.log(status);
+
   useEffect(() => {
-    if (!user?.email) {
-      router.replace("/auth/signup");
+    if (session?.user && status === "authenticated") {
+      router.replace("/feeds");
     }
-  }, []);
+  }, [session, status]);
   console.log(user);
+
+  const [unsignedUser, setUnsignedUser] = useState(
+    localStorage.getItem("user")
+  );
+
+  useEffect(() => {
+    if (user?.file !== null && user?.email) {
+      let currUser = jwt.sign({ unsignedInUser: user }, "xxttyyppqqtttyy", {
+        expiresIn: "1d",
+      });
+
+      console.log(currUser);
+      localStorage.setItem("user", currUser);
+
+      setUnsignedUser(localStorage.getItem("user"));
+    }
+  }, [user]);
+
+  console.log(unsignedUser);
 
   const handleChange = (otp: React.SetStateAction<string>) => setOtp(otp);
   console.log(otp);
+
+  console.log(router.query.otp_number);
 
   const verifyOtp = async () => {
     try {
@@ -77,7 +103,11 @@ const VerifyEmail: FC = () => {
         {
           otp_number: router.query.otp_number,
           otp: otp,
-          user: user,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${unsignedUser}`,
+          },
         }
       );
       console.log(data);

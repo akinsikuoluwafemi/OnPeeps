@@ -195,6 +195,10 @@ const BtnWrapper = styled.div`
 const Signup = () => {
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    localStorage.removeItem("user");
+  }, []);
+
   const initialValues = {
     username: "",
     email: "",
@@ -391,7 +395,7 @@ const Signup = () => {
           // let currUser = jwt.sign({ user }, "secret", {
           //   expiresIn: "1d",
           // });
-
+          // console.log(currUser);
           const { data } = await axios.post(
             "http://localhost:3000/api/v1/users/signup",
             {

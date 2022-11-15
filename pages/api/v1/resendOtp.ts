@@ -33,32 +33,37 @@ const resendOtp = handler.post<ExtendedRequest | NextApiResponse>(
       });
 
       const number = req.body.otp_number;
-      console.log(number);
-      console.log(OTP);
+      //   console.log(number);
+      //   console.log(OTP);
 
       const salt = await bcrypt.genSalt(10);
 
       // hash the otp
       const hashedOTP = await bcrypt.hash(OTP, salt);
-      console.log(hashedOTP);
+      //   console.log(hashedOTP);
 
-      // create the otp in the database
-      const newOTP = await db.query(
-        "INSERT INTO otps (otp, otp_number) VALUES ($1, $2) RETURNING *",
-        [hashedOTP, number]
-      );
+      // before you create another one, delete the old ones there.
+      await db.query("DELETE FROM otps WHERE otp_number = $1", [number]);
+      console.log("deleted old otps");
 
-      console.log(newOTP.rows[0]);
+      try {
+        // create the otp in the database
+        const newOTP = await db.query(
+          "INSERT INTO otps (otp, otp_number) VALUES ($1, $2) RETURNING *",
+          [hashedOTP, number]
+        );
 
-      // if its created
-      if (newOTP.rows.length > 0) {
-        // send the otp to the user
-        const msg = {
-          to: req.body.email,
-          from: process.env.FROM_EMAIL,
-          subject: "Your OTP",
-          text: `Hello ${req.body.email}, your OTP is ${OTP}`,
-          html: `<div style="font-family: Helvetica,Arial,sans-serif;min-width:100%;overflow:auto;line-height:2">
+        console.log("created", newOTP.rows[0]);
+
+        // if its created
+        if (newOTP.rows.length > 0) {
+          // send the otp to the user
+          const msg = {
+            to: req.body.email,
+            from: process.env.FROM_EMAIL,
+            subject: "Your OTP",
+            text: `Hello ${req.body.email}, your OTP is ${OTP}`,
+            html: `<div style="font-family: Helvetica,Arial,sans-serif;min-width:100%;overflow:auto;line-height:2">
                 <div style="margin:50px auto;width:70%;padding:20px 0">
                   <div style="border-bottom:1px solid #eee">
                     <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">OnPeeps</a>
@@ -76,19 +81,26 @@ const resendOtp = handler.post<ExtendedRequest | NextApiResponse>(
                 </div>
               </div>
                 `,
-        };
-        const sentEmail = await sgMail.send(msg);
-        if (sentEmail) {
-          res.status(201).json({
-            status: "success",
-            message: "OTP sent successfully",
-          });
-        } else {
-          res.status(400).json({
-            status: "failed",
-            message: "OTP not sent",
-          });
+          };
+          const sentEmail = await sgMail.send(msg);
+          if (sentEmail) {
+            res.status(201).json({
+              status: "success",
+              message: "OTP sent successfully",
+            });
+          } else {
+            res.status(400).json({
+              status: "failed",
+              message: "OTP not sent",
+            });
+          }
         }
+      } catch (error) {
+        console.log(error);
+        res.status(400).json({
+          status: "failed",
+          message: "OTP not sent",
+        });
       }
     } catch (error) {
       res.status(400).json({

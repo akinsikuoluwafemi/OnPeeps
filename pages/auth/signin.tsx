@@ -151,6 +151,10 @@ const SignIn = () => {
   console.log(session?.user);
   console.log(status);
 
+  useEffect(() => {
+    localStorage.removeItem("user");
+  }, []);
+
   const unSignedInUser = useSelector(selectCurrentUser);
   console.log("unSignedInUser", unSignedInUser);
   const router = useRouter();

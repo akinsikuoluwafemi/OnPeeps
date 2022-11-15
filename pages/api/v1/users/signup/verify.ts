@@ -18,6 +18,19 @@ interface ExtendedResponse {
 //     cookie(name: string, value: string): void;
 //   }
 
+// interface User {
+//   id: number;
+//   username: string;
+//   email: string;
+//   password: string;
+//   cell_phone: string;
+//   created_at: string;
+//   updated_at: string;
+//   verified: boolean;
+//   confirm_password: string;
+//   file: File | null | undefined;
+// }
+
 const handler = nc<NextApiRequest, NextApiResponse>();
 
 // handler.use(signUp);
@@ -42,13 +55,15 @@ export default handler.post<ExtendedRequest | NextApiResponse>(
       );
       const otpTime = otpHolder.rows[0]?.timestamp;
 
+      console.log("see what its returning", otpHolder.rows);
+
       const getMinDiff = (startDate: any, endDate: any): number => {
         const msInMinute = 60 * 1000;
 
         return Math.round(Math.abs(endDate - startDate) / msInMinute);
       };
 
-      console.log(getMinDiff(new Date(), otpTime));
+      // console.log(getMinDiff(new Date(), otpTime));
 
       // if the timestamps is more than 5 minutes ago
       if (getMinDiff(new Date(), otpTime) > 5 || otpHolder.rows.length === 0) {
@@ -58,30 +73,43 @@ export default handler.post<ExtendedRequest | NextApiResponse>(
         });
       } else {
         const isMatch = bcrypt.compareSync(req.body.otp, otpHolder.rows[0].otp);
+        console.log("otp is match", isMatch);
         if (isMatch) {
           const salt = await bcrypt.genSalt(10);
-          const user = req.body.user;
-          const hashedPassword = await bcrypt.hash(user.password, salt);
+
+          // get the unsignedUser from headers
+          const unsignendUser = req.headers.authorization.split(" ")[1];
+          const { unsignedInUser }: any = jwt.verify(
+            unsignendUser,
+            // process.env?.JWT_SECRET as string
+            "xxttyyppqqtttyy"
+          );
+
+          const userPassword = unsignedInUser.password;
+          const userConfirmPassword = unsignedInUser.confirm_password;
+          const hashedPassword = await bcrypt.hash(userPassword, salt);
           const hashedConfirmPassword = await bcrypt.hash(
-            user.confirm_password,
+            userConfirmPassword,
             salt
           );
+
+          // console.log("userToBeLoggedIn", unsignedInUser);
 
           const result = await db.query(
             "INSERT INTO users (username, email, password, confirm_password, id_card_picture, cell_phone, verified) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
             [
-              user.username,
-              user.email,
+              unsignedInUser.username,
+              unsignedInUser.email,
               hashedPassword,
               hashedConfirmPassword,
-              user.file,
-              user.cell_phone,
-              user.verified,
+              unsignedInUser.file,
+              unsignedInUser.cell_phone,
+              unsignedInUser.verified,
             ]
           );
 
           const userResult = result.rows[0];
-          console.log("userResult", userResult);
+          // console.log("userResult", userResult);
 
           // const token = jwt.sign(
           //   {
@@ -101,7 +129,7 @@ export default handler.post<ExtendedRequest | NextApiResponse>(
             message: "User created successfully",
             status: "success",
             user: {
-              email: user.email,
+              email: unsignedInUser.email,
             },
           });
         } else {
