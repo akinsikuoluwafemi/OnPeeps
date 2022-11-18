@@ -28,7 +28,7 @@ const NavbarMobile = () => {
             <a>
               <img
                 style={{ height: "40px", width: "40px" }}
-                src="../images/cover.png"
+                src="../../images/cover.png"
               />
             </a>
           </Link>
@@ -40,7 +40,7 @@ const NavbarMobile = () => {
         >
           <img
             style={{ height: "40px", width: "40px" }}
-            src="../images/icons/hamburger.svg"
+            src="../../images/icons/hamburger.svg"
           />
         </MenuItems>
       </MenuItem>

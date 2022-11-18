@@ -22,7 +22,7 @@ import {
   selectCurrentLoading,
   selectCurrentError,
 } from "slices/currentUserSlice";
-import jwt from "jsonwebtoken";
+import { useSession } from "next-auth/react";
 
 const fileTypes = ["JPG", "PNG", "PDF", "DOC", "DOCX", "XLS", "XLSX", "JPEG"];
 // 1Fakinsiku_#
@@ -44,6 +44,11 @@ const Section = styled.section`
   @media (max-width: 768px) {
     margin: 3rem auto;
     padding: 2rem 0;
+    width: 100vw;
+  }
+
+  @media (max-width: 425px) {
+    width: auto;
   }
 
   .&copy {
@@ -200,6 +205,13 @@ const BtnWrapper = styled.div`
 `;
 
 const Signup = () => {
+  const { data: session, status } = useSession();
+  console.log(session?.user);
+  useEffect(() => {
+    if (session?.user && status === "authenticated") {
+      router.replace("/feeds");
+    }
+  }, [session, status]);
   const dispatch = useDispatch();
 
   useEffect(() => {

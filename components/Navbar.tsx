@@ -8,7 +8,6 @@ import Button from "utils/Buttons";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { moveup } from "utils/Nav";
-import { signIn } from "next-auth/react";
 
 const NavContainer = styled.div`
   color: ${({ theme }) => theme.defaultTheme.primaryDefaultColor};
@@ -116,7 +115,7 @@ const Navbar = () => {
             <a>
               <img
                 style={{ height: "40px", width: "40px" }}
-                src="../images/cover.png"
+                src="../../images/cover.png"
               />
             </a>
           </Link>

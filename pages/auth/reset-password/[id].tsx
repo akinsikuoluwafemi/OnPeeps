@@ -1,19 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PageLayout from "@/components/layout";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import Link from "next/link";
 import Input from "utils/Input";
-import { SignInformValues, SignupFormValues } from "utils/FormValues";
+import { SignupFormValues } from "utils/FormValues";
 import Button from "utils/Buttons";
 import { FileUploader } from "react-drag-drop-files";
 import { BiShowAlt, BiHide } from "react-icons/bi";
-import { useDispatch, useSelector } from "react-redux";
-import { selectCurrentUser, setCurrentUser } from "slices/currentUserSlice";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
+import { v4 as uuidv4 } from "uuid";
+import axios from "axios";
+import { FaSpinner } from "react-icons/fa";
+import { ToastContainer, toast, TypeOptions } from "react-toastify";
 import { notify } from "utils/errors";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectCurrentUser,
+  setCurrentUser,
+  setLoading,
+  setError,
+  selectCurrentLoading,
+  selectCurrentError,
+} from "slices/currentUserSlice";
+import { useSession } from "next-auth/react";
 
+const fileTypes = ["JPG", "PNG", "PDF", "DOC", "DOCX", "XLS", "XLSX", "JPEG"];
 // 1Fakinsiku_#
 const Section = styled.section`
   min-height: 100vh;
@@ -24,6 +35,7 @@ const Section = styled.section`
   justify-content: center;
   align-items: center;
   padding: 3rem 0;
+  // min-width: 100vw;
 
   @media (min-width: 1500px) {
     justify-content: flex-start;
@@ -44,10 +56,9 @@ const Section = styled.section`
   }
 `;
 
-const SignInWrapper = styled.div`
-  width: 500px;
-  // min-height: 300px;
-  height: auto;
+const SignUpWrapper = styled.div`
+  width: 550px;
+  min-height: auto;
   background-color: #fbf9f6;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -55,7 +66,6 @@ const SignInWrapper = styled.div`
   // display: flex;
   // flex-direction: column;
   padding-bottom: 2rem;
-  // padding-top: 2rem;
 
   .input {
     margin-top: 1rem;
@@ -88,7 +98,15 @@ const SignInWrapper = styled.div`
     }
   }
 `;
-
+const Spinner = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+  
+`;
 const FormWrapper = styled.form`
   padding-left: 2rem;
   padding-right: 2rem;
@@ -96,7 +114,7 @@ const FormWrapper = styled.form`
 
   width: 100%;
   // background-color: red;
-  // min-height: 400px;
+  min-height: auto;
 
   .error {
     color: red;
@@ -112,10 +130,6 @@ const FormWrapper = styled.form`
     text-align: left !important;
   }
 
-  label {
-    // padding: 1rem 2rem;
-  }
-
   .upload-wrapper {
     margin-top: 2rem;
   }
@@ -123,6 +137,32 @@ const FormWrapper = styled.form`
   .signup-btn {
     width: 300px;
     margin-top: 2rem;
+
+    span {
+      animation-name: ${Spinner};
+      animation-duration: 5000ms;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  .guidelines {
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .guidelines-text {
+      margin: 0;
+      font-size: 0.8rem;
+
+      a {
+        color: #ffaa05;
+        font-weight: 500;
+      }
+    }
   }
 `;
 
@@ -159,35 +199,55 @@ const InputWrapper = styled.div`
   }
 `;
 
-const SignIn = () => {
+const BtnWrapper = styled.div`
+  margin: 0 auto;
+  text-align: center;
+`;
+
+const ResetPassword = () => {
   const { data: session, status } = useSession();
   console.log(session?.user);
-  console.log(status);
-
-  useEffect(() => {
-    localStorage.removeItem("user");
-  }, []);
-
-  const unSignedInUser = useSelector(selectCurrentUser);
-  console.log("unSignedInUser", unSignedInUser);
-  const router = useRouter();
-
   useEffect(() => {
     if (session?.user && status === "authenticated") {
       router.replace("/feeds");
     }
   }, [session, status]);
+  const dispatch = useDispatch();
 
-  const initialValues: SignInformValues = {
-    email: "" || unSignedInUser?.email,
+  useEffect(() => {
+    localStorage.removeItem("user");
+  }, []);
+
+  const initialValues = {
+    username: "",
+    email: "",
     password: "",
+    confirm_password: "",
+    file: null,
+    cell_phone: "",
+    created_at: "",
+    updated_at: "",
+    verified: false,
+    id: 0,
   };
 
+  const user = useSelector(selectCurrentUser);
+  const loading = useSelector(selectCurrentLoading);
+  const uploadError = useSelector(selectCurrentError);
+  // save the user in local storage
+
   const [formValues, setFormValues] = useState(initialValues);
-  const dispatch = useDispatch();
+
+  const router = useRouter();
+
   const [formErrors, setFormErrors] = useState<
     React.SetStateAction<SignupFormValues | any>
   >({});
+
+  useEffect(() => {
+    dispatch(setCurrentUser({ user: formValues }));
+    // console.log("changing user to empty");
+  }, []);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -198,64 +258,64 @@ const SignIn = () => {
     setFormValues({ ...formValues, [target.name]: target.value });
   };
 
-  const validate = (values: SignInformValues) => {
-    let errors = {} as SignInformValues | any;
+  const validate = (values: SignupFormValues | any) => {
+    let errors = {} as SignupFormValues | any;
 
-    if (!values.email) {
-      errors = { ...errors, email: "Email is required" };
+    var passwordRegex =
+      /^(?=.*\d)(?=.*[a-z])(?=.*[!@#$%^&*])(?=.*[A-Z]).{8,20}$/;
+
+    if (values.confirm_password !== values.password) {
+      errors = { ...errors, confirm_password: "Passwords do not match" };
+    } else if (!values.confirm_password) {
+      errors = {
+        ...errors,
+        confirm_password: "Confirm Password is required",
+      };
     }
 
     if (!values.password) {
       errors = { ...errors, password: "Password is required" };
+    } else if (values.password.length < 8) {
+      errors = {
+        ...errors,
+        password: "Password should be 8 characters long ",
+      };
+    } else if (!passwordRegex.test(values.password)) {
+      errors = {
+        ...errors,
+        password:
+          "Password should contain at least one uppercase, one lowercase, one number and one special character",
+      };
     }
+
     return errors;
   };
 
   useEffect(() => {
-    if (Object.keys(formErrors).length === 0 && isSubmitting) {
+    if (Object.keys(formErrors).length === 0 && isSubmitting && !uploadError) {
       submitForm();
     }
   }, [formErrors]);
-  console.log(formErrors);
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // / this fires if all checks are passed
   const submitForm = async () => {
     // do the try catch and submit here
-
-    const res = await signIn("credentials", {
-      redirect: false,
-      email: formValues.email,
-      password: formValues.password,
-    });
-    console.log(res);
-    if (res?.status === 200) {
-      notify("Signed in successfully", "success", "bottom-left", "light");
-
-      router.replace("/feeds");
-    } else {
-      notify("invalid password", "error", "bottom-left", "light");
-    }
+    console.log(formValues);
   };
 
-  console.log("unSignedInUser", unSignedInUser);
+  console.log(user);
 
-  const [showPassword, setShowPassword] = useState(false);
-
-  useEffect(() => {
-    dispatch(setCurrentUser({ user: formValues }));
-  }, [unSignedInUser]);
+  console.log(uploadError);
 
   return (
-    <PageLayout name="SignIn / OnPeeps">
+    <PageLayout name="Signup / OnPeeps">
       <Section>
-        <SignInWrapper>
-          <SignupText>SigIn</SignupText>
-          <GoToSignintext>
-            Not a member?
-            <Link href="/auth/signup">
-              <a>&nbsp;Sign Up</a>
-            </Link>
-          </GoToSignintext>
+        <SignUpWrapper>
+          <SignupText>Reset Password</SignupText>
+          <GoToSignintext>Kindly keep your password safe.</GoToSignintext>
 
           <FormWrapper
             autoComplete="on"
@@ -263,30 +323,35 @@ const SignIn = () => {
               e.preventDefault();
               setFormErrors(validate(formValues));
               setFormValues(formValues);
-              // setFormErrors(validate(formValues));
+              dispatch(setCurrentUser({ user: formValues }));
+
               setIsSubmitting(true);
-              if (Object.keys(formErrors).length === 0 && isSubmitting) {
+              if (
+                Object.keys(formErrors).length === 0 &&
+                isSubmitting &&
+                uploadError === null
+              ) {
+                dispatch(setLoading(true));
+
                 submitForm();
+                dispatch(setLoading(false));
+              } else if (uploadError !== null) {
+                dispatch(setLoading(false));
+
+                dispatch(setError("error in file upload"));
+                console.log("error in file upload");
+                notify(
+                  "error in file upload or form validation",
+                  "error",
+                  "bottom-left",
+                  "light"
+                );
               }
             }}
           >
-            <Input
-              bdclr={formErrors.email && "red"}
-              style={{ border: formErrors.email && "1px solid red" }}
-              className="input"
-              handleChange={handleChange}
-              formValues={formValues.email}
-              type="email"
-              placeholder="Email"
-              name="email"
-            />
-
-            {formErrors?.email && (
-              <small className="error">{formErrors.email}</small>
-            )}
-
             <InputWrapper>
               <Input
+                // style={{ padding: "10px 16px", margin: "0 2rem" }}
                 bdclr={formErrors.password && "red"}
                 style={{ border: formErrors.password && "1px solid red" }}
                 className="input"
@@ -308,9 +373,34 @@ const SignIn = () => {
               <small className="error">{formErrors.password}</small>
             )}
 
+            <InputWrapper>
+              <Input
+                // style={{ padding: "10px 16px", margin: "0 2rem" }}
+                bdclr={formErrors.confirm_password && "red"}
+                style={{
+                  border: formErrors.confirm_password && "1px solid red",
+                }}
+                className="input"
+                handleChange={handleChange}
+                formValues={formValues.confirm_password}
+                type={showConfirmPassword ? "text" : "Password"}
+                placeholder="Confirm Password"
+                name="confirm_password"
+              />
+              <span
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="icon"
+              >
+                {showConfirmPassword ? <BiShowAlt /> : <BiHide />}
+              </span>
+            </InputWrapper>
+            {formErrors?.confirm_password && (
+              <small className="error">{formErrors.confirm_password}</small>
+            )}
+
             <div style={{ marginTop: "1rem" }}></div>
 
-            <Link href="/auth/forgot-password">
+            <Link href="/auth/signin">
               <a
                 style={{
                   borderBottom: "1px solid #FFAA05",
@@ -322,38 +412,41 @@ const SignIn = () => {
                   textAlign: "left",
                 }}
               >
-                Forgot Password &#8594;
+                Back to signin &#8594;
               </a>
             </Link>
 
-            <div
-              style={{
-                margin: "0 auto",
-                textAlign: "center",
-                // marginTop: "5rem",
-              }}
-            >
+            <BtnWrapper>
               <Button
                 style={{
                   width: "100%",
                   padding: "15px 0",
                   fontSize: "1.2rem",
                 }}
+                disabled={loading}
                 className="signup-btn"
                 variant="primary"
                 type="submit"
               >
-                Sign In
+                {loading ? (
+                  <span>
+                    <FaSpinner />
+                  </span>
+                ) : (
+                  "Reset Password"
+                )}
+                {/* Signup */}
               </Button>
-            </div>
+            </BtnWrapper>
           </FormWrapper>
-        </SignInWrapper>
+        </SignUpWrapper>
         <p className="&copy">
           &copy; {new Date().getFullYear()} OnPeeps Inc. All rights reserved.
         </p>
+        <ToastContainer />
       </Section>
     </PageLayout>
   );
 };
 
-export default SignIn;
+export default ResetPassword;

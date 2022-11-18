@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import db from "db";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProviders from "next-auth/providers/credentials";
+import EmailProvider from "next-auth/providers/email";
 
 const authOptions: NextAuthOptions = {
   session: {
@@ -39,6 +40,19 @@ const authOptions: NextAuthOptions = {
         }
       },
     } as any),
+
+    // EmailProvider({
+    //   server: {
+    //     host: process.env.EMAIL_SERVER_HOST,
+    //     port: process.env.EMAIL_SERVER_PORT,
+    //     auth: {
+    //       user: process.env.EMAIL_SERVER_USER,
+    //       pass: process.env.EMAIL_SERVER_PASSWORD,
+    //     },
+    //   },
+    //   from: process.env.FROM_EMAIL,
+    //   maxAge: 24 * 60 * 60,
+    // }),
   ],
 
   callbacks: {

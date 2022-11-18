@@ -32,6 +32,11 @@ const Section = styled.section`
   @media (max-width: 768px) {
     margin: 3rem auto;
     padding: 2rem 0;
+    width: 100vw;
+  }
+
+  @media (max-width: 425px) {
+    width: auto;
   }
 
   .&copy {
@@ -121,6 +126,17 @@ const FormWrapper = styled.form`
   }
 `;
 
+const GoToSignintext = styled.p`
+  color: ${({ theme }) => theme.defaultTheme.primaryDefaultColor};
+  padding-left: 2rem;
+  font-weight: ${({ theme }) => theme.defaultTheme.fontWeightLight};
+  padding-bottom: 1rem;
+  a {
+    color: #ffaa05;
+    font-weight: 500;
+  }
+`;
+
 const SignupText = styled.p`
   color: ${({ theme }) => theme.defaultTheme.primaryDefaultColor};
   padding-top: 2rem;
@@ -149,7 +165,7 @@ const SignIn = () => {
     }
   }, [session, status]);
 
-  const initialValues: SignInformValues = {
+  const initialValues = {
     email: "" || unSignedInUser?.email,
     password: "",
   };
@@ -171,14 +187,14 @@ const SignIn = () => {
 
   const validate = (values: SignInformValues) => {
     let errors = {} as SignInformValues | any;
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
     if (!values.email) {
       errors = { ...errors, email: "Email is required" };
+    } else if (!regex.test(values.email)) {
+      errors = { ...errors, email: "Email is invalid" };
     }
 
-    if (!values.password) {
-      errors = { ...errors, password: "Password is required" };
-    }
     return errors;
   };
 
@@ -187,30 +203,13 @@ const SignIn = () => {
       submitForm();
     }
   }, [formErrors]);
-  console.log(formErrors);
 
   // / this fires if all checks are passed
   const submitForm = async () => {
     // do the try catch and submit here
 
-    const res = await signIn("credentials", {
-      redirect: false,
-      email: formValues.email,
-      password: formValues.password,
-    });
-    console.log(res);
-    if (res?.status === 200) {
-      notify("Signed in successfully", "success", "bottom-left", "light");
-
-      router.replace("/feeds");
-    } else {
-      notify("invalid password", "error", "bottom-left", "light");
-    }
+    console.log(formValues);
   };
-
-  console.log("unSignedInUser", unSignedInUser);
-
-  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     dispatch(setCurrentUser({ user: formValues }));
@@ -220,7 +219,11 @@ const SignIn = () => {
     <PageLayout name="forgot-password / OnPeeps">
       <Section>
         <SignInWrapper>
-          <SignupText>Reset your password</SignupText>
+          <SignupText>Forgot password</SignupText>
+
+          <GoToSignintext>
+            Don’t worry, it happens to the best of us.
+          </GoToSignintext>
 
           <FormWrapper
             autoComplete="on"
@@ -257,10 +260,10 @@ const SignIn = () => {
             <Link href="/auth/signin">
               <a
                 style={{
-                  borderBottom: "1px solid #95a9c6",
+                  borderBottom: "1px solid #FFAA05",
                   width: "max-content",
                   marginTop: "5rem",
-                  color: "#95a9c6",
+                  color: "#FFAA05",
                   fontSize: "0.8rem",
                   fontWeight: 300,
                   textAlign: "left",
