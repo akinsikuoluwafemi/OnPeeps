@@ -137,6 +137,7 @@ const Navbar = () => {
               </Link>
             );
           })}
+
           {/* <p onClick={() => signIn()}>&nbsp; Sign in &nbsp;</p> */}
         </MenuItems>
         <MenuItems>

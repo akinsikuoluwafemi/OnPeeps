@@ -16,6 +16,7 @@ interface InputProps {
   style?: React.CSSProperties;
   formError?: string;
   className?: string;
+  bdclr?: string;
 }
 
 export const Input: FC<InputProps> = ({

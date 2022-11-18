@@ -59,6 +59,10 @@ const SplashScreen = styled.div`
       width: 350px;
       height: 150px;
     }
+    @media (max-width: 400px) {
+      width: auto;
+      height: 100px;
+    }
   }
 `;
 

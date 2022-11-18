@@ -257,7 +257,7 @@ const HeroSection = () => {
 
         <ButtonWrapper>
           <Button className="m-right" variant="primary">
-            <Link href="/signin">
+            <Link href="/auth/signin">
               <a>&nbsp; Sign In &nbsp;</a>
             </Link>
           </Button>

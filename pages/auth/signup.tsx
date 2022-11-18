@@ -67,14 +67,21 @@ const SignUpWrapper = styled.div`
     margin-bottom: 0.2rem;
     padding: 1rem;
     border-radius: 8px;
-    border: 1px solid #1c3879;
+    border: 1px solid
+      ${({ theme }) =>
+        theme.bdclr
+          ? theme.bdclr
+          : theme.defaultTheme.secondaryTextColorDefault};
     width: 100%;
-    font-size: 1.2rem;
+    font-size: 1rem;
 
     &:focus {
       outline: none;
-      border: 1px solid #95a9c6;
-      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+      border: 1px solid
+        ${({ theme }) =>
+          theme.bdclr ? theme.bdclr : theme.defaultTheme.primaryDefaultColor};
+
+      // box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
       transition: all 0.3s ease-in-out;
     }
 
@@ -480,6 +487,7 @@ const Signup = () => {
           >
             <Input
               // style={{ padding: "10px 16px", margin: "0 2rem" }}
+              bdclr={formErrors.username && "red"}
               style={{ border: formErrors.username && "1px solid red" }}
               className="input"
               handleChange={handleChange}
@@ -493,6 +501,7 @@ const Signup = () => {
             )}
             <Input
               // style={{ padding: "10px 16px", margin: "0 2rem" }}
+              bdclr={formErrors.email && "red"}
               style={{ border: formErrors.email && "1px solid red" }}
               className="input"
               handleChange={handleChange}
@@ -509,6 +518,7 @@ const Signup = () => {
             <InputWrapper>
               <Input
                 // style={{ padding: "10px 16px", margin: "0 2rem" }}
+                bdclr={formErrors.password && "red"}
                 style={{ border: formErrors.password && "1px solid red" }}
                 className="input"
                 handleChange={handleChange}
@@ -532,6 +542,7 @@ const Signup = () => {
             <InputWrapper>
               <Input
                 // style={{ padding: "10px 16px", margin: "0 2rem" }}
+                bdclr={formErrors.confirm_password && "red"}
                 style={{
                   border: formErrors.confirm_password && "1px solid red",
                 }}
@@ -559,7 +570,7 @@ const Signup = () => {
                 handleChange={handleFileChange}
                 name="file"
                 types={fileTypes}
-                label="Upload/Drop Govt. approved ID right here"
+                label="Drag & Drop Govt. approved ID right here"
                 style={{ borderColor: "red" }}
                 multiple={false}
                 onTypeErr={(err: any) => {

@@ -130,30 +130,6 @@ const SignupText = styled.p`
   font-size: 28px;
 `;
 
-const GoToSignintext = styled.p`
-  color: ${({ theme }) => theme.defaultTheme.primaryDefaultColor};
-  padding-left: 2rem;
-  font-weight: ${({ theme }) => theme.defaultTheme.fontWeightLight};
-  padding-bottom: 1rem;
-  a {
-    color: #ffaa05;
-    font-weight: 500;
-  }
-`;
-
-const InputWrapper = styled.div`
-  position: relative;
-
-  .icon {
-    position: absolute;
-    left: 88%;
-    top: 45%;
-    bottom: 0;
-    cursor: pointer;
-    font-size: 1.2rem;
-  }
-`;
-
 const SignIn = () => {
   const { data: session, status } = useSession();
   console.log(session?.user);
@@ -241,16 +217,10 @@ const SignIn = () => {
   }, [unSignedInUser]);
 
   return (
-    <PageLayout name="SignIn / OnPeeps">
+    <PageLayout name="forgot-password / OnPeeps">
       <Section>
         <SignInWrapper>
-          <SignupText>SigIn</SignupText>
-          <GoToSignintext>
-            Not a member?
-            <Link href="/auth/signup">
-              <a>&nbsp;Sign Up</a>
-            </Link>
-          </GoToSignintext>
+          <SignupText>Reset your password</SignupText>
 
           <FormWrapper
             autoComplete="on"
@@ -272,7 +242,7 @@ const SignIn = () => {
               handleChange={handleChange}
               formValues={formValues.email}
               type="email"
-              placeholder="Email"
+              placeholder="Enter your email address to get a link to rest your password"
               name="email"
             />
 
@@ -280,32 +250,11 @@ const SignIn = () => {
               <small className="error">{formErrors.email}</small>
             )}
 
-            <InputWrapper>
-              <Input
-                bdclr={formErrors.password && "red"}
-                style={{ border: formErrors.password && "1px solid red" }}
-                className="input"
-                handleChange={handleChange}
-                formValues={formValues.password}
-                type={showPassword ? "text" : "password"}
-                placeholder="Password"
-                name="password"
-              />
-              <span
-                onClick={() => setShowPassword(!showPassword)}
-                className="icon"
-              >
-                {showPassword ? <BiShowAlt /> : <BiHide />}
-              </span>
-            </InputWrapper>
+            <div style={{ marginTop: ".5rem" }}></div>
 
-            {formErrors?.password && (
-              <small className="error">{formErrors.password}</small>
-            )}
+            <br />
 
-            <div style={{ marginTop: "1rem" }}></div>
-
-            <Link href="/auth/forgot-password">
+            <Link href="/auth/signin">
               <a
                 style={{
                   borderBottom: "1px solid #95a9c6",
@@ -317,10 +266,9 @@ const SignIn = () => {
                   textAlign: "left",
                 }}
               >
-                Forgot Password &#8594;
+                Signin to your account &#8594;
               </a>
             </Link>
-
             <div
               style={{
                 margin: "0 auto",
@@ -330,6 +278,7 @@ const SignIn = () => {
             >
               <Button
                 style={{
+                  // marginTop: "5rem",
                   width: "100%",
                   padding: "15px 0",
                   fontSize: "1.2rem",
@@ -338,7 +287,7 @@ const SignIn = () => {
                 variant="primary"
                 type="submit"
               >
-                Sign In
+                Send password reset link
               </Button>
             </div>
           </FormWrapper>

@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Button from "utils/Buttons";
-import { Formik, useField, Form } from "formik";
 
 const Section = styled.section`
   min-height: auto; //change to auto later
