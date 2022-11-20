@@ -3,6 +3,7 @@ import { combineReducers } from "@reduxjs/toolkit";
 import currentUserReducer from "./currentUserSlice";
 import sidebarReducer from "./sidebarSlice";
 import counterReducer from "./counterSlice";
+import forgetPasswordReducer from "./forgotPasswordUserSlice";
 
 import { persistReducer } from "redux-persist";
 
@@ -17,6 +18,7 @@ export const persistConfig = {
 };
 
 const rootReducer = combineReducers({
+  forgetPassword: forgetPasswordReducer,
   currentUser: currentUserReducer,
   sidebar: sidebarReducer,
   counter: counterReducer,

@@ -5,14 +5,12 @@ import Link from "next/link";
 import Input from "utils/Input";
 import { SignInformValues, SignupFormValues } from "utils/FormValues";
 import Button from "utils/Buttons";
-import { FileUploader } from "react-drag-drop-files";
-import { BiShowAlt, BiHide } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser, setCurrentUser } from "slices/currentUserSlice";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { notify } from "utils/errors";
+import axios from "axios";
 
 // 1Fakinsiku_#
 const Section = styled.section`
@@ -167,7 +165,6 @@ const SignIn = () => {
 
   const initialValues = {
     email: "" || unSignedInUser?.email,
-    password: "",
   };
 
   const [formValues, setFormValues] = useState(initialValues);
@@ -185,8 +182,8 @@ const SignIn = () => {
     setFormValues({ ...formValues, [target.name]: target.value });
   };
 
-  const validate = (values: SignInformValues) => {
-    let errors = {} as SignInformValues | any;
+  const validate = (values: { email: string }) => {
+    let errors = {} as { email: string } | any;
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
     if (!values.email) {
@@ -207,6 +204,24 @@ const SignIn = () => {
   // / this fires if all checks are passed
   const submitForm = async () => {
     // do the try catch and submit here
+
+    try {
+      const { data } = await axios.post(
+        "http://localhost:3000/api/v1/users/signup/forgot-password",
+        {
+          email: formValues.email,
+        }
+      );
+      if (data.status === "success") {
+        notify(data.message, "success", "bottom-left", "light");
+
+        setTimeout(() => {
+          router.push(`/auth/reset-password/${data.token}`);
+        }, 1200);
+      }
+    } catch (err: any) {
+      notify(err.response.data.message, "error", "bottom-left", "light");
+    }
 
     console.log(formValues);
   };
@@ -245,7 +260,7 @@ const SignIn = () => {
               handleChange={handleChange}
               formValues={formValues.email}
               type="email"
-              placeholder="Enter your email address to get a link to rest your password"
+              placeholder="Enter your email address to get a link to reset your password"
               name="email"
             />
 

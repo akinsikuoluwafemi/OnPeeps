@@ -13,8 +13,9 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { notify } from "utils/errors";
+import { ToastContainer } from "react-toastify";
 
-// 1Fakinsiku_#
+// 1Fakinsiku_#  akinsiku.o@yahoo.com: 1Fbcinsiku_#
 const Section = styled.section`
   min-height: 100vh;
   background-color: #fff;
@@ -351,6 +352,7 @@ const SignIn = () => {
         <p className="&copy">
           &copy; {new Date().getFullYear()} OnPeeps Inc. All rights reserved.
         </p>
+        <ToastContainer />
       </Section>
     </PageLayout>
   );
