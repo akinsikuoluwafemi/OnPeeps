@@ -66,7 +66,10 @@ const authOptions: NextAuthOptions = {
     session: ({ session, token }) => {
       if (token) {
         // @ts-ignore
-        session.user = token.user;
+        // session.user = token.user;
+        session.user.email = token.user.email;
+        // @ts-ignore
+        session.user.password = token.user.password;
       }
       return session;
     },

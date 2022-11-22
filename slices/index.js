@@ -14,14 +14,14 @@ export const persistConfig = {
   key: "root",
   storage,
   //   whitelist: ["currentUser"],
-  whitelist: [],
+  whitelist: ["forgetPassword", "currentUser"],
 };
 
 const rootReducer = combineReducers({
-  forgetPassword: forgetPasswordReducer,
   currentUser: currentUserReducer,
   sidebar: sidebarReducer,
   counter: counterReducer,
+  forgetPassword: forgetPasswordReducer,
 });
 
 export default persistReducer(persistConfig, rootReducer);

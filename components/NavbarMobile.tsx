@@ -25,12 +25,12 @@ const NavbarMobile = () => {
       <MenuItem>
         <MenuItems>
           <Link href="/">
-            <a>
-              <img
-                style={{ height: "40px", width: "40px" }}
-                src="../../images/cover.png"
-              />
-            </a>
+
+            <img
+              style={{ height: "40px", width: "40px" }}
+              src="../../images/cover.png"
+            />
+
           </Link>
         </MenuItems>
         <MenuItems

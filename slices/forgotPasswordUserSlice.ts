@@ -45,7 +45,7 @@ export const forgetPasswordUserSlice = createSlice({
     },
   },
 
-  extraReducers: {},
+  // extraReducers: {},
 });
 
 export const { setForgetPasswordUser, setLoading, setError } =
@@ -53,7 +53,13 @@ export const { setForgetPasswordUser, setLoading, setError } =
 
 // getting a chunk of state  from the store itself
 
-// export const selectForgetPasswordUser = (state: RootState) =>
-//   state.forgetPasswordUser?.data;
+export const selectForgetPasswordUser = (state: RootState) =>
+  state.forgetPassword?.data;
+
+export const selectForgetPasswordUserLoading = (state: RootState) =>
+  state.forgetPassword.loading;
+
+export const selectForgetPasswordUserError = (state: RootState) =>
+  state.forgetPassword.error;
 
 export default forgetPasswordUserSlice.reducer;

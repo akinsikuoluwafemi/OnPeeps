@@ -229,7 +229,7 @@ const PageLayout: FC<LayoutProps> = ({
 
               <Button className="btn" variant="primary">
                 <Link href="/signup">
-                  <a>&nbsp; Sign Up &nbsp;</a>
+                  &nbsp; Sign Up &nbsp;
                 </Link>
               </Button>
             </div>

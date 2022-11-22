@@ -112,35 +112,36 @@ const Navbar = () => {
       <MenuItem>
         <MenuItems>
           <Link href="/">
-            <a>
-              <img
-                style={{ height: "40px", width: "40px" }}
-                src="../../images/cover.png"
-              />
-            </a>
+
+            <img
+              style={{ height: "40px", width: "40px" }}
+              src="../../images/cover.png"
+            />
+
           </Link>
         </MenuItems>
         <MenuItems>
           {path.map((item, index) => {
             return (
-              <Link href={item.path} key={index}>
-                <a
-                  style={{
-                    fontWeight: `${
-                      item.path === router.pathname ? "bold" : "light"
-                    }`,
-                  }}
-                >
-                  {item.name}
-                </a>
-              </Link>
+              (<Link
+                href={item.path}
+                key={index}
+                style={{
+                  fontWeight: `${
+                    item.path === router.pathname ? "bold" : "light"
+                  }`,
+                }}>
+
+                {item.name}
+
+              </Link>)
             );
           })}
 
           {/* <p onClick={() => signIn()}>&nbsp; Sign in &nbsp;</p> */}
         </MenuItems>
         <MenuItems>
-          <Link href="/auth/signup">
+          <Link href="/auth/signup" legacyBehavior>
             <Button variant="primary">
               <a>&nbsp; Sign Up &nbsp;</a>
             </Button>

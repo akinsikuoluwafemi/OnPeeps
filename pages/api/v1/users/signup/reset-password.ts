@@ -57,13 +57,8 @@ const resetPassword = handler.put<ExtendedRequest | NextApiResponse>(
           });
         } else {
           const password = req.body.password;
-          const confirm_password = req.body.confirm_password;
           const salt = await bcrypt.genSalt(10);
           const hashedPassword = await bcrypt.hash(password, salt);
-          const hashedConfirmPassword = await bcrypt.hash(
-            confirm_password,
-            salt
-          );
 
           try {
             const user = await db.query(
@@ -74,10 +69,10 @@ const resetPassword = handler.put<ExtendedRequest | NextApiResponse>(
             if (user.rows.length > 0) {
               await db.query(
                 "UPDATE users SET password = $1, confirm_password = $2 where email = $3",
-                [hashedPassword, hashedConfirmPassword, req.body.email]
+                [hashedPassword, hashedPassword, req.body.email]
               );
               return res.status(200).json({
-                message: "Password reset successful",
+                message: "Password reset successfully",
                 status: "success",
               });
             } else {
@@ -99,8 +94,6 @@ const resetPassword = handler.put<ExtendedRequest | NextApiResponse>(
       res.status(500).json({ status: "error", message: err.message });
     }
   }
-
-  //         }
 );
 
 export default resetPassword;

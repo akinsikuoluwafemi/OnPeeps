@@ -4,39 +4,38 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { selectCurrentUser, setCurrentUser } from "slices/currentUserSlice";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 const Feeds: NextPage = (): JSX.Element => {
   const { data: session, status } = useSession();
   const router = useRouter();
-  console.log(router);
   const dispatch = useDispatch();
 
-  //   const { redirect } = router.query; //login?redirect=/shipping
-  //   console.log(redirect);
+  // const { redirect } = router.query; //login?redirect=/shipping
+  // console.log(redirect);
+
+  console.log(session);
 
   // router.push(redirect || "/");
 
   useEffect(() => {
-    dispatch(setCurrentUser({ user: {} }));
-    // console.log("changing user to empty");
-  }, [session]);
+    // a function that returns single user after signup is completed
+    const getUser = async () => {
+      if (session) {
+        const { data } = await axios.post("/api/v1/users/get-single-user", {
+          email: session?.user?.email,
+        });
+        console.log(data);
+        dispatch(setCurrentUser({ user: data.data }));
+      }
+    };
+
+    getUser();
+  }, []);
 
   useEffect(() => {
     if (status === "unauthenticated") signIn();
   }, [status]);
-
-  //   useEffect(() => {
-  //     const securePage = async () => {
-  //       const session = await getSession();
-  //       if (!session) {
-  //         signIn();
-  //       } else {
-  //         console.log(session);
-  //         setLoading(false);
-  //       }
-  //     };
-  //     securePage();
-  //   }, []);
 
   return <div>Feeds Page</div>;
 };

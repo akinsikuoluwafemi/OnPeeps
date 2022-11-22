@@ -71,7 +71,7 @@ const forgetPassword = handler.post<ExtendedRequest | NextApiResponse>(
             html: `
             
                 <p style="font-family: Helvetica,Arial,sans-serif">
-                    Hello <span style="font-weight: bold">${email}</span>, you are receiving this email because you (or someone else) have requested the reset of the password for your account. Please click on the following <a href=${baseUrl}/auth/reset-password/${token}>link</a>, or paste this into your browser to complete the process within one hour of receiving it: <span style="font-weight: bold">${baseUrl}/auth/reset-password/${token}<span>. If you did not request this, please ignore this email and your password will remain unchanged.
+                    Hello <span style="font-weight: bold">${email}</span>, you are receiving this email because you (or someone else) have requested the reset of the password for your account. Please click on the following <a href=${baseUrl}/auth/reset-password?token=${token}>link</a>, or paste this into your browser to complete the process within one hour of receiving it: <span >${baseUrl}/auth/reset-password?token=${token}<span>. <br/> If you did not request this, please ignore this email and your password will remain unchanged.
                 </p>
 
                 `,
