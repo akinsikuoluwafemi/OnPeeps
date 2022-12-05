@@ -4,6 +4,8 @@ import currentUserReducer from "./currentUserSlice";
 import sidebarReducer from "./sidebarSlice";
 import counterReducer from "./counterSlice";
 import forgetPasswordReducer from "./forgotPasswordUserSlice";
+import locationReducer from "./currentLocationSlice";
+import requestLocationReducer from "./requestLocationSlice";
 
 import { persistReducer } from "redux-persist";
 
@@ -22,6 +24,8 @@ const rootReducer = combineReducers({
   sidebar: sidebarReducer,
   counter: counterReducer,
   forgetPassword: forgetPasswordReducer,
+  location: locationReducer,
+  requestLocation: requestLocationReducer,
 });
 
 export default persistReducer(persistConfig, rootReducer);

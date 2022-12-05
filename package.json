@@ -8,6 +8,12 @@
     "test:ci": "jest --ci"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/icons-material": "^5.10.15",
+    "@mui/material": "^5.10.15",
+    "@reach/combobox": "^0.18.0",
+    "@react-google-maps/api": "^2.17.0",
     "@reduxjs/toolkit": "^1.8.6",
     "@sendgrid/mail": "^7.7.0",
     "@types/bcrypt": "^5.0.0",
@@ -37,6 +43,7 @@
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-drag-drop-files": "^2.3.7",
+    "react-google-autocomplete": "^2.7.0",
     "react-icons": "^4.4.0",
     "react-locomotive-scroll": "^0.2.2",
     "react-otp-input": "^2.4.0",
@@ -45,6 +52,7 @@
     "react-toastify": "^9.1.1",
     "redux-persist": "^6.0.0",
     "styled-components": "^5.3.6",
+    "use-places-autocomplete": "^4.0.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

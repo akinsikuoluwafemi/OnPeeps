@@ -21,6 +21,16 @@ const GlobalStyles = createGlobalStyle`
         text-decoration: none;
     }
 
+    ul, li{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    a{
+        text-decoration: none;
+    }
+
 `;
 
 export default GlobalStyles;

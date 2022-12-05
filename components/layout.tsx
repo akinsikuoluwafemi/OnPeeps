@@ -2,11 +2,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import {
   FC,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
   useRef,
-  useState,
 } from "react";
 import styled from "styled-components";
 import Head from "next/head";
